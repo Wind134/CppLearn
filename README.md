@@ -33,4 +33,4 @@
   致命错误：无法读取远程仓库。
   ```
 
-  **解决方案：**更改端口为443端口，[操作步骤链接](https://docs.github.com/en/authentication/troubleshooting-ssh/using-ssh-over-the-https-port)。
+  **解决方案：** 更改端口为443端口，[操作步骤链接](https://docs.github.com/en/authentication/troubleshooting-ssh/using-ssh-over-the-https-port)。
