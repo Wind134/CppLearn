@@ -34,3 +34,18 @@
   ```
 
   **解决方案：** 更改端口为443端口，[操作步骤链接](https://docs.github.com/en/authentication/troubleshooting-ssh/using-ssh-over-the-https-port)。
+
+
+- **问题2--git push需要密码**
+
+  主要是因为`git clone`的时候，clone的是https链接，会要求账户密码匹配，[原因说明链接](https://docs.github.com/zh/get-started/getting-started-with-git/about-remote-repositories)，[设置密码链接](https://docs.github.com/zh/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)。
+
+  可以设置为通过ssh进行clone，这样会直接通过密钥进行匹配，省去了上面的步骤：
+
+    - 首先移除从https链接clone来的仓库：`git remote remove origin`
+
+    - 添加ssh方式：`git remote add origin git@github.com:Wind134/CppLearn.git`
+
+    - 推送到远程仓库：`git push -u origin main`
+
+
