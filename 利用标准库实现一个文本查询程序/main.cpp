@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include "TextQueryOutput.h"
-using std::ifstream, std::string, std::cin, std::cout, std::endl, std::ostream;
+using namespace std;
 // using line_no = std::vector<std::string>::size_type;	// 声明别名，使用行号
 
 // 先使用TextQuery和QueryResult，该函数接受要处理的文件ifstream

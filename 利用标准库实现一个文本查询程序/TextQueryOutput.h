@@ -15,7 +15,7 @@ public:
     QueryResult query(const std::string&) const;	// 该函数返回这么一个类类型的变量
     ~TextQuery() {};
 private:
-    std::shared_ptr<std::vector<std::string>> file;	// 文件内容信息
+    std::shared_ptr<std::vector<std::string>> file;	// 文件内容信息，保存的是每行的文本
     std::map<std::string,
     			std::shared_ptr<std::set<line_no>>> wm;	// map映射，保存单词和出现的行号信息
 };
@@ -26,7 +26,7 @@ TextQuery::TextQuery(std::ifstream &is): file(new std::vector<std::string>)
     while (getline(is, text))
     {
         file->push_back(text);  // 以每一行为一个元素保存文本
-        int n = file->size() - 1;	// 保存行号
+        int n = file->size() - 1;	// 保存行号，这里减1只是为了与vector的首项保持一致
         std::istringstream line(text);	// 将行文本分解为单词
         std::string word;
         while (line >> word) {		// 对行中每个单词
