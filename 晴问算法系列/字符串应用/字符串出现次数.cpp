@@ -1,3 +1,5 @@
+/* 给定两个字符串数组，统计第二个数组中的字符串在
+第一个字符串数组中出现的次数 */
 #include <iostream>
 #include <vector>
 #include <string>
