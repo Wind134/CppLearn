@@ -1,4 +1,5 @@
 {
+    "version": "0.2.0",
     "configurations": [
         {
             "name": "C/C++: g++ 生成和调试活动文件",
@@ -27,6 +28,5 @@
             "miDebuggerPath": "/usr/bin/gdb",
             "miDebuggerArgs": "-q -ex quit; wait() { fg >/dev/null; }; /bin/gdb -q --interpreter=mi"
         }
-    ],
-    "version": "2.0.0"
+    ]
 }

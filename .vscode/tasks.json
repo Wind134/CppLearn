@@ -9,7 +9,6 @@
                 "-g",
                 "${file}",
                 "-o",
-                // "${fileDirname}/${fileBasenameNoExtension}"
                 "/home/ping/编译生成的可执行文件/${fileBasenameNoExtension}"
             ],
             "options": {
