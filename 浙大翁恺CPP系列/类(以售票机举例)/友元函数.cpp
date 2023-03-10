@@ -50,7 +50,7 @@ int main()
     for (int i = 0; i < CarNums; i++)
     {
         p[i].setPrice(i);   // 通过循环设置价格price
-        addPrice.ModifyCar(p);  // 这只对第一个元素生效啊
+        addPrice.ModifyCar(&p[i]);  // 这只对第一个元素生效啊，加上地址，对每个生效了
         p[i].print();      
     }
     cout << "维修后的车辆最高的价值为：" << MostExpensiveCar(p, CarNums) << endl;
