@@ -25,6 +25,8 @@
 
 ### git使用方法
 
+#### 基础操作
+
 1、`git init`——用于创建git仓库，其可以在一个已有的非git项目的根目录下执行，把已有项目初始化成为git仓库，也可以用于初始化一个空的目录为git仓库。
 
 2、`git add .`——将当前目录下的所有文件添加到暂存区。'.'代表的是相对目录。
@@ -37,6 +39,15 @@
 4、`git remote add origin git@github.com:Wind134/CppLearn.git`——添加远程源，源名为origin(<font color='red'>该命令是不是只需要执行一次?</font>)。
 
 5、`git push -u origin main`——提交到远程源origin的main分支。
+
+#### 进阶操作
+
+**情形一：** 在没有进行push之前，撤销commit：
+  
+- `git reset HEAD^`——不删除工作空间提交的代码，但撤销commit，且撤销`git add .`操作；
+
+- `git reset --soft HEAD^`——不删除工作空间提交的代码，撤销commit，但不撤销`git add .`操作；
+- `git reset --hard HEAD^`——删除工作空间提交的代码，撤销commit，并且撤销`git add .`操作；
 
 ### git使用故障汇总
 
