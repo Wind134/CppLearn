@@ -15,7 +15,6 @@ int getKthElement(const vector<int>& nums1, const vector<int>&nums2, int k)  // 
     
     while (true)
     {
-        /* code */
         // 处理边界情况
         if (nums1Index == m)    return nums2[nums2Index + k - 1];
         if (nums2Index == n)    return nums1[nums1Index + k - 1];
