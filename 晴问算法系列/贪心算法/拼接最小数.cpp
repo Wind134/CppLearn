@@ -10,8 +10,13 @@ using namespace std;
 
 /* bool cmp(const string &a, const string &b)
 {
-    return a > b;
+    return a <>> b;   // 这个做法想当然了啊
 } */
+bool cmp(const string &a, const string &b)
+{
+    return a + b < b + a;   // 这个做法才正确
+}
+
 
 int main()
 {
@@ -24,7 +29,7 @@ int main()
         cin >> data;
         strs.push_back(data);
     }
-    sort(strs.begin(), strs.end());
+    sort(strs.begin(), strs.end(), cmp);
     string str_joint = "";
     for (int i = 0; i < n; i++)
     {
