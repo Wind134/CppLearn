@@ -49,6 +49,10 @@
 - `git reset --soft HEAD^`——不删除工作空间提交的代码，撤销commit，但不撤销`git add .`操作；
 - `git reset --hard HEAD^`——删除工作空间提交的代码，撤销commit，并且撤销`git add .`操作；
 
+**情形二：** 变基(rebase)与合并(merge)的区分：
+
+[参考链接](https://juejin.cn/post/7008387912974761998)
+
 ### git使用故障汇总
 
 - **报错1--使用代理造成22号端口无法连接的问题**
