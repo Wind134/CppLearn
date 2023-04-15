@@ -32,7 +32,7 @@ int main()
     int n;
     cin >> n;
     vector<Node> nums(n);   // 定义一个数组
-    Node data;  // 处理输入的结点
+    Node data;              // 处理输入的结点
     for (int i = 0; i < n; i++)     // 每个结点都保存完毕
     {
         cin >> data.lnum >> data.rnum;
