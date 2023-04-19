@@ -14,26 +14,26 @@ public:
     int pointInfo;   
 };
 
-struct VNode    // 头结点
+struct VNode    // 顶点结点
 {
     shared_ptr<ENode> first = nullptr; // 指向第一条边，先初始化
     int degree = 0; // 保存每个结点的度
 };
 
-void createEdge (const int& firstPoint, const int& endPoint, 
-vector<VNode>& v, vector<ENode>& p)   // 出点，入点，头结点，用的尾插法
+void createEdge (const int& startPoint, const int& endPoint, 
+vector<VNode>& v, vector<ENode>& p)   // 出点，入点，头结点，用的尾插法，因此多了一个p的结点
 {
-    auto edgefirstPoint = make_shared<ENode>(ENode(endPoint));    // 以firstPoint为起始点的边
-    if (v[firstPoint].first == nullptr) v[firstPoint].first = edgefirstPoint;
-    if (p[firstPoint].next == nullptr) p[firstPoint].next = edgefirstPoint;
+    auto edgestartPoint = make_shared<ENode>(ENode(endPoint));    // 以startPoint为起始点的边
+    if (v[startPoint].first == nullptr) v[startPoint].first = edgestartPoint;
+    if (p[startPoint].next == nullptr) p[startPoint].next = edgestartPoint;
     else
     {
-        p[firstPoint].next->next = edgefirstPoint; // 指向最后一个结点，以便使用尾插法
-        p[firstPoint].next = edgefirstPoint;
+        p[startPoint].next->next = edgestartPoint; // 指向最后一个结点，以便使用尾插法
+        p[startPoint].next = edgestartPoint;
     }
-    v[firstPoint].degree++;
+    v[startPoint].degree++;
 
-    auto edgeendPoint = make_shared<ENode>(ENode(firstPoint));
+    auto edgeendPoint = make_shared<ENode>(ENode(startPoint));
     if (v[endPoint].first == nullptr) v[endPoint].first = edgeendPoint;
     if (p[endPoint].next == nullptr) p[endPoint].next = edgeendPoint;
     else

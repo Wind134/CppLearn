@@ -20,17 +20,17 @@ struct VNode    // 头结点
     int degree = 0;
 };
 
-void createEdge (const int& firstPoint, const int& endPoint, vector<VNode>& v)   // 出点，入点，头结点，用的头插法
+void createEdge (const int& startPoint, const int& endPoint, vector<VNode>& v)   // 出点，入点，头结点，用的头插法
 {
-    auto edgefirstPoint = make_shared<ENode>(ENode(endPoint));    // 以firstPoint为起始点的边
-    auto p1 = v[firstPoint].first;
-    v[firstPoint].first = edgefirstPoint;
-    edgefirstPoint->next = p1;
-    auto edgeendPoint = make_shared<ENode>(ENode(firstPoint));
+    auto edgestartPoint = make_shared<ENode>(ENode(endPoint));    // 以startPoint为起始点的边
+    auto p1 = v[startPoint].first;
+    v[startPoint].first = edgestartPoint;
+    edgestartPoint->next = p1;
+    auto edgeendPoint = make_shared<ENode>(ENode(startPoint));
     auto p2 = v[endPoint].first;
     v[endPoint].first = edgeendPoint;
     edgeendPoint->next = p2;
-    v[firstPoint].degree++;
+    v[startPoint].degree++;
     v[endPoint].degree++;
 }
 
