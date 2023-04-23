@@ -22,6 +22,7 @@ const vector<int>& w, const int& value, const int& tempWeight)
 
 int main()
 {
+    
     cin >> nums >> weight;
     vector<int> wi(nums);
     vector<int> ci(nums);
@@ -37,7 +38,7 @@ int main()
         ci[i] = c;
     }
     DFS(0, ci, wi, 0, 0);
-    cout << maxValue;
+    cout << maxValue << endl;
 }
 
 
