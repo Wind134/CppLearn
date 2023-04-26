@@ -16,7 +16,7 @@ void moveWays(int n, char A, char B, char C)
     if (n == 0) return; // 当没有圆盘时，啥也不干！
     else
     {
-        moveWays(n - 1, A, C, B);   // 我n - 1个先想办法到B，此时运用递归记得变换顺序，因为相对位置变了
+        moveWays(n - 1, A, C, B);   // 我 n - 1个先想办法到B，此时运用递归记得变换顺序，因为相对位置变了
         cout << A << "->" << C << endl;     // 移动最后一个到C
         moveWays(n - 1, B, A, C);   // 移动B柱上的n-1个圆盘
     }  

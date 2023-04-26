@@ -7,17 +7,35 @@ using namespace std;
 
 int nums, weight;   // 物品的数目以及背包的最大重量
 int maxValue = 0;   // 初始状态下的最大价值
+vector<int> object_index; 
 
 void DFS(const int& index, const vector<int>& v,
 const vector<int>& w, const int& value, const int& tempWeight)
 {
     if (index == nums)  // 在完成了对n个物品的处理之后
     {
-        if(tempWeight <= weight && value > maxValue) maxValue = value;
-        return; // 退出函数执行
+        if(tempWeight <= weight)
+        {    
+            if(value > maxValue)
+                {
+                    maxValue = value;
+                    object_index.push_back(index); 
+                }
+        }
+        return;         // 退出函数执行
     }
     DFS(index+1, v, w, value, tempWeight);  // 不放第n个
-    DFS(index+1, v, w, value + v[index], tempWeight + w[index]);  // 放第n个
+    if (tempWeight + w[index] <= weight)
+    {
+        if(value + v[index] > maxValue)
+        {
+            
+            maxValue = value + v[index]; 
+        }
+        object_index.push_back(index);      // 将当前物品的索引存入vector中
+        DFS(index+1, v, w, value + v[index], tempWeight + w[index]);  // 放第n个
+        object_index.pop_back();
+    }
 }
 
 int main()
@@ -39,6 +57,10 @@ int main()
     }
     DFS(0, ci, wi, 0, 0);
     cout << maxValue << endl;
+    for (const auto& data : object_index)
+    {
+        cout << data << " ";
+    }
 }
 
 
