@@ -37,8 +37,10 @@
 - `git commit -a`——-a参数设置修改文件后不需要执行git add命令，直接来提交。
 
 4、`git remote add origin git@github.com:Wind134/CppLearn.git`——添加远程源，源名为origin(<font color='red'>该命令是不是只需要执行一次?</font>)。
+- 不同工程需要添加不同的远程源
 
 5、`git push -u origin main`——提交到远程源origin的main分支。
+- <font color=red>只有该工程第一次push需要这么写？</font>
 
 #### 进阶操作
 
