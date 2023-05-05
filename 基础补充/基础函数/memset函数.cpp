@@ -14,7 +14,7 @@ bool a[MAXN];
 int b[MAXN];
 
 int main() {
-    // const char* x;
+    
     // scanf("%c", &x);
     memset(a, true, sizeof(a));    // 开辟一个空间,sizeof代表的是字节大小
     memset(b, 1, sizeof(b));
