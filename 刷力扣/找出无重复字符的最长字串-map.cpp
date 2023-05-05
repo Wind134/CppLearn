@@ -4,7 +4,6 @@
 
 // 上述过程是自己思考的结果，确实算不上什么比较好的思路
 #include <iostream>
-#include <unordered_set>
 #include <unordered_map>
 
 using namespace std;        // 这种写法慎用，默认选取了std的命名空间(cpp源文件可以用，无妨)
@@ -22,7 +21,7 @@ int lengthOfLongestSubstring(const string &s) {
             else                                        // 如果某个值找到了，那么
             {
                 left = (left > (char_map[s[i]] + 1)) ? left : (char_map[s[i]] + 1);                  // 那么更新左端值，这一步可能出问题
-                char_map[s[i]] = i;
+                char_map[s[i]] = i;     // 更新映射
             }
             ans = (i - left + 1 > ans) ? (i - left + 1) : ans;  // 只有更大才会更新，否则不动
             //for (auto it = occ.begin(); it != occ.end(); it++)    cout << *it << endl;    // 打印测试

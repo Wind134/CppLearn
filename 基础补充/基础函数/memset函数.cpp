@@ -11,12 +11,15 @@ memset 函数是内存赋值函数，用来给某一块内存空间进行赋值�
 
 const int MAXN = 10;
 bool a[MAXN];
+int b[MAXN];
 
 int main() {
     // const char* x;
     // scanf("%c", &x);
     memset(a, true, sizeof(a));    // 开辟一个空间,sizeof代表的是字节大小
+    memset(b, 1, sizeof(b));
     printf("%ld\n", sizeof(a));
     printf("%d\n", a[0]);
+    printf("%d\n", b[0]);
     return 0;
 }
