@@ -14,34 +14,25 @@ struct ListNode {
 ListNode* removeNthFromEnd(ListNode* head, int n)
 {
     int length = 1;
-    ListNode* tagNode = new ListNode();
-    tagNode->next = head; 
-    while (tagNode->next->next != nullptr)
+    ListNode* tagNode = head->next; 
+    while (tagNode->next != nullptr)
     {
         length++;
-        tagNode->next = tagNode->next->next;
+        tagNode = tagNode->next;
     }
     // 经过上述循环获取了链表长度，我们需要释放的是第length + 1 - n个结点
     // cout << "Length: " << length << endl;
 
-    tagNode->next = head; // 重新初始化为头结点
-    if (length == 1)
-        {
-            ListNode* tagNode = new ListNode(0, head);
-            tagNode = head->next;
-            delete head;
-            return tagNode;
-        }
+    tagNode = head; // 重新初始化为头结点
     
-    for (int i = 1; i < length  - n; i++)
+    for (int i = 0; i < length - n; i++)
     {
-        tagNode->next = tagNode->next->next;    // tagNode变成了要释放的那个结点之前的结点
+        tagNode = tagNode->next;    // tagNode变成了要释放的那个结点之前的结点
     }
-    ListNode* temp = tagNode->next->next;
-    tagNode->next->next = temp->next;
-    delete(temp);
 
-    delete(tagNode);
+    ListNode* temp = tagNode->next;
+    tagNode->next = temp->next;
+    delete(temp);
 
     return head;
 }
@@ -84,7 +75,11 @@ int main()
     }
     ListNode* head = new ListNode();
     createListNode(head, array, nums);
-    removeNthFromEnd(head->next, 1);
+    visitListNode(head);
+    int n;
+    cout << "\nPlease input the Node to remove: ";
+    cin >> n;
+    removeNthFromEnd(head, n);
     visitListNode(head);
     return 0;
 }
