@@ -48,7 +48,7 @@
 
 - **声明和定义**
 
-  声明和定义的的区别看起来也许微不足道，但事实上很重要，==如果要在多个文件中使用同一个变量，就必须将声明和定义分离==；
+  声明和定义的的区别看起来也许微不足道，但事实上很重要，**如果要在多个文件中使用同一个变量，就必须将声明和定义分离**；
 
   此时，变量的<font color=red>定义必须出现在且只能出现在一个文件中</font>，而其他<font color=red>用到该变量的文件必须对其进行声明</font>，却绝对<font color=red>不能重复定义</font>；
 
@@ -206,7 +206,7 @@ char *pc = reinterpret_cast<char*>(ip);	// 为运算对象的位模式提供较�
 
 以常用的预处理功能`#include`为例，当预处理器看到该标记时就会用指定的头文件内容代替`#include`；
 
-C++程序还会用到的一项预处理功能是**头文件保护符**。
+C++程序还会用到的一项预处理功能是==头文件保护符==。
 
 - `#define`指令把一个名字设定为预处理变量；
 - `#ifdef`当且仅当变量已定义时为真，`#ifndef`当且仅当变量未定义时为真。<font color="red">一旦检查结果为真</font>，则执行后续操作直至遇到`#endif`指令为止；
@@ -741,7 +741,7 @@ Currency p; p = bucks;	// 这叫赋值
   p = &ia[2];		// p指向ia的尾元素(即二维数组的最后一个一维数组)
   ```
 
-  ==我们会发现，(*p)总是会有一个圆括号，这个圆括号很重要。==
+  **我们会发现，(*p)总是会有一个圆括号，这个圆括号很重要**。
 
   ```c++
   int *ip[4];		// 整型指针的数组，有些等价于： (int* ip)[4]，一个数组，保存了4个指针变量
@@ -1234,7 +1234,7 @@ window = screen('?');		// 语法上没问题，但逻辑上有问题，会把cha
 
 <font color=blue>因此怎么合理设置形参的顺序也是个需要谨慎考虑的问题。</font>
 
-==局部变量不能作为默认形参==，除此之外，只要表达式的类型可以转换成形参所需的类型，该表达式就能作为默认实参。
+**局部变量不能作为默认形参**，除此之外，只要表达式的类型可以转换成形参所需的类型，该表达式就能作为默认实参。
 
 用作默认实参的名字在函数声明所在的作用域内解析，而这些名字的求值过程发生在函数调用时：
 
@@ -2408,7 +2408,7 @@ void Account::rate(double newRate)
 
 **因为静态数据成员不属于类的任何一个对象，所以他们不是在创建类的对象时被定义的，即他们不是由类的构造函数初始化的。**
 
-==一般而言不能在类的内部初始化静态成员而是必须在外部定义和初始化。==
+**一般而言不能在类的内部初始化静态成员而是必须在外部定义和初始化。**
 
 ```c++
 double Account::interestRate = initRate();	// 定义并且初始化一个静态成员
@@ -5290,6 +5290,7 @@ public:
 我们定义一个通用的**函数模板(function template)**，而不是为每个类型都定义一个新函数，以compare为例：
 
 ```c++
+// T其实是一个类型，这个类型他不一定定义了大于小于的运算符，这就是又可以展开来讲的内容了
 template <typename T>
 int compare(const T & v1, const T &v2)
 {
@@ -5362,7 +5363,7 @@ int compare(const T & v1, const T &v2)
 
 - **非类型模板参数**
 
-  一个非类型参数表示一个值而非一个类型，即我们通过一个==特定的类型名而非关键字class或typename==来指定非类型参数。
+  一个非类型参数表示一个值而非一个类型，即我们**通过一个特定的类型名而非关键字class或typename**来指定非类型参数。
 
   当一个模板被实例化时，非类型参数的值被一个用户提供的或编译器推断出的值所替代(<font color=red>必须是常量表达式</font>)；
 
@@ -5386,7 +5387,7 @@ int compare(const T & v1, const T &v2)
   template <typename T> inline T min(const T&, const T&);
   ```
 
-对于模板而言，为了生成一个实例化版本，编译器需要掌握函数模板或类模板成员函数的定义，==模板的头文件通常同时包括声明及定义==。
+对于模板而言，为了生成一个实例化版本，编译器需要掌握函数模板或类模板成员函数的定义，**模板的头文件通常同时包括声明及定义**。
 
 最后一个总结性的陈述，先看代码：
 
@@ -5410,7 +5411,7 @@ int compare(const T & v1, const T &v2)
 
 #### 类模板自身
 
-**类模板(class template)**是用来生成类的蓝图，与函数模板不同之处在于编译器不能为类模板推断模板参数类型，必须在模板名后的尖括号中提供额外信息，用来代替模板参数的模板实参列表；
+**类模板(class template)**是用来生成类的蓝图，与**函数模板不同之处在于编译器不能为类模板推断模板参数类型**，必须在模板名后的尖括号中提供额外信息，用来代替模板参数的模板实参列表；
 
 - **定义类模板**
 
@@ -5540,7 +5541,7 @@ int compare(const T & v1, const T &v2)
 
   ```c++
   template <typename> class BlobPtr;	// 下面需要实例化，要用到
-  template <typename> class Blob;	// 下一个运算符需要
+  template <typename> class Blob;		// 下一个运算符需要
   template <typename T>
   	bool operator==(const Blob<T>&, const Blob<T>&);	// 模板友元函数
   
@@ -5821,7 +5822,7 @@ extern template class Blob<string>;	// 显式实例化(类)声明
 extern template int compare(const int&, const int&);	// 显式实例化(函数)声明
 ```
 
-当编译器遇到extern模板声明时，它不会在本文件中生成实例化代码，因为==extern承诺在程序其他位置有一个非extern声明(定义)，声明可以有多个，定义仅能一个==；
+当编译器遇到extern模板声明时，它不会在本文件中生成实例化代码，因为**extern承诺在程序其他位置有一个非extern声明(定义)，声明可以有多个，定义仅能一个**；
 
 ```c++
 extern template class Blob<string>;	// Blob<string>实例化将会在其他位置
@@ -5869,15 +5870,15 @@ template <typename T> T fref(const T&, const T&);
 string s1("a value");
 const string s2("another value");
 
-fobj(s1, s2);	// 忽略了顶层const
+fobj(s1, s2);	// 忽略了顶层const，因为类型本身不会自行加上const
 fref(s1, s2);	// 调用了两个const string&
 
 int a[10], b[42];
 fobj(a, b);	// 数组名当指针地址
-fref(a, b)	// 数组名是指针类型，非引用类型
+fref(a, b)	// T被推断为指针类型，非引用类型，但整体而言是对一个指针的引用
 ```
 
-以上两个模板形参都是一致的，所以在进行推断时类型不一致会无法实例化，即发生错误；
+以上两个模板形参都是一致的，而在进行推断时类型不一致会无法实例化，因为两个模板参数都是T，即发生错误；
 
 如果想要实现相关需求：**只需要将模板定义为两个类型，以上面的那部分代码为例，即改成：**
 
@@ -5892,7 +5893,7 @@ int flexibleCompare(const A& v1, const B& v2)
 还有一种情形是：**含有普通类型定义参数的函数模板**：
 
 ```c++
-template <typename T> ostream &print(ostream &os, const T &obj)
+template <typename T> ostream &print(ostream &os, const T &obj)	// 给定的就按照给定的类型走
 {
     return os << obj;
 }
@@ -5918,7 +5919,7 @@ printf(f, 10);	// 使用print(ostream&, const int&)；ostream&类型不依赖于
   T1 sum(T2, T3);
   ```
 
-  在这种情形下，每次调用都需要为T1提供一个**显式模板实参**：`auto val3 = sum<long, long>(i, lng);`
+  在这种情形下，每次调用都需要为T1提供一个**显式模板实参**：`auto val3 = sum<long long>(i, lng);`
 
   由于显式模板实参按从左到右的顺序与对应的模板参数匹配，只有尾部参数的显式模板实参才可以忽略，因此可能会出现一个比较糟糕的设计：
 
@@ -5926,8 +5927,8 @@ printf(f, 10);	// 使用print(ostream&, const int&)；ostream&类型不依赖于
   template <typename T1, typename T2, typename T3>	// "< >"中指定的具体类型才叫模板实参
   T3 sum(T2, T1);
   
-  // 如果我们这么定义
-  auto val3 = sum<long long>(i, lng);	// long long这个模板实参对应的是T1，但是T1又要通过lng去推断，这样就有问题了，因此应该
+  // 如果我们这么定义，由于需要从左往右与对应模板参数进行匹配
+  auto val3 = sum<long long>(i, lng);	// long long这个模板实参对应的是T1，但是T1却还要通过lng去推断，这样就有问题了，因此应该
   auto val3 = sum<long long, int, long>(i, lng);	// 显式指定了模板实参，那么i与lng就必须按要求来
   // 所以说是糟糕的设计
   ```
@@ -5955,7 +5956,7 @@ auto &s = fcn(ca.begin(), ca.end());	// 应该返回string&
 
 ```c++
 template <typename It>
-auto &fcn(It beg, It end) -> decltype(*beg)	// decltype去推断返回类型(话说auto本身不能推断吗？)
+auto &fcn(It beg, It end) -> decltype(*beg)	// decltype去推断返回类型(话说auto本身不能推断吗？)-auto本身就要根据返回类型去推断
 {
     // 处理序列，It当迭代器类型看
     return *beg;	// 返回序列中一个元素的引用，但我们不知道该返回值的类型
@@ -5990,7 +5991,7 @@ auto fcn2(It beg, It end) ->
 ```c++
 void func(int(*)(const string&, const string&));
 void func(int(*)(const int&, const int&));
-func(compare);	// 使用compare的哪个？
+func(compare);		// 使用compare的哪个？
 fun(compare<int>);	// 传递了compare(const int&, const int&)
 ```
 
@@ -6000,7 +6001,7 @@ fun(compare<int>);	// 传递了compare(const int&, const int&)
 
 **从左值引用函数参数推断类型**
 
-这部分主要是要回忆起以前的一个知识点：==传递给一个引用的实参必须是一个左值==；
+这部分主要是要回忆起以前的一个知识点：**传递给一个引用的实参必须是一个左值**；
 
 ```c++
 template <typename T> void f1(T&);
@@ -6095,7 +6096,7 @@ flip2(g, i, 42);	// 错误，原因如下分析
 
 因此又出现了一个`std::forward`来解决这个问题，它能保持原始实参的类型，同样定义在头文件utility中；
 
-forward的调用必须通过显示模板实参来调用，返回该显式实参类型的右值引用，即`forward<T>`的返回类型是T&&；
+forward的调用必须通过显式模板实参来调用，返回该显式实参类型的右值引用，即`forward<T>`的返回类型是T&&；
 
 重写翻转函数：
 
@@ -6233,6 +6234,7 @@ string debug_rep(const char *p)
 来使用上述的可变参数模板：
 
 ```c++
+// 下面的例子是一个函数参数包的案例，由于Foo都加了const，需要注意到这个细节
 int i = 0; string s = "how do you do"; double d = 3.14;
 foo(i, s, 42, d);	// 包中有三个参数，实例化出
 void foo(const int&, const string&, const int&, const double&);
@@ -6249,6 +6251,8 @@ template<typename ... Args> void g(Args ... args) {
     cout << sizeof...(args) << endl;	// 函数参数数目
 }
 ```
+
+**Notes：**`sizeof...`不是一个函数，而是一个运算符，它是C++11引入的编译时运算符；
 
 ### 可变参数模板编写
 
@@ -6278,7 +6282,7 @@ ostream &print(ostream &os, const T &t, const Args&... rest)
 |  print(cout, s, 42)   |  s   |            42             |
 |    print(cout, 42)    |      | 调用非可变参数版本的print |
 
-定义了可变参数版本的print时，非可变参数的版本的声明必须在作用域中，否则==可变参数版本会无限递归==，因为没有退出的界限；
+定义了可变参数版本的print时，非可变参数的版本的声明必须在作用域中，否则**可变参数版本会无限递归**，因为没有退出的界限；
 
 - 无限递归原因在于，当调用print(cout)时，由于参数已经消耗完毕，无法匹配任何模板，编译失败。
 - 但是，这个调用来自上一层的递归，上一层的递归调用也无法继续执行(因为它的返回值来自这个调用)。
@@ -6497,7 +6501,7 @@ hash<Sales_data>::operator()(const Sales_data& s) const
 
 C++语言中既有**类模板(class template)**，也有函数模板，vector是其中一个类模板。
 
-==模板本身并不是类或者函数，相反可以将模板看作编译器生成类或函数编写的一份说明==；
+**模板本身并不是类或者函数，相反可以将模板看作编译器生成类或函数编写的一份说明**；
 
 编译器根据模板创建类或函数的过程称为**实例化(instantiation)**，当使用模板时，需要指出编译器应把类或函数实例化化成何种类型。
 
@@ -6767,7 +6771,7 @@ while ((pos = name.find_first_of(numbers, pos)) != string::npos) {
 
 该函数接受一个迭代器范围，第三个参数是一个**谓词**，find_if对输入序列中的每个元素调用这个给定的谓词；
 
-==<font color="blue">返回</font>第一个使谓词<font color="blue">返回</font>非0值的元素的迭代器==，如果不存在这样的元素，则<font color="blue">返回</font>尾迭代器。
+**<font color="blue">返回</font>第一个使谓词<font color="blue">返回</font>非0值的元素的迭代器**，如果不存在这样的元素，则<font color="blue">返回</font>尾迭代器。
 
 ### string的数值转换
 
@@ -6808,14 +6812,19 @@ cout << strlen(ca) << endl;		// 严重错误，strlen可能会沿着ca在内存�
 
 如果程序的某处需要一个C风格字符串，无法直接用string对象来代替它；
 
-==不能直接用string对象直接初始化指向字符的指针。==
+**不能直接用string对象直接初始化指向字符的指针**；
 
 为了完成该功能，string专门提供了一个名为c_str的成员函数：
 
 ```c++
+const char* str = "Hello, World!";  // C风格字符串
+
+// 下面两行举例与第一行无关
 char *str = s;	// 错误，s是string类型
 const char *str = s.c_str();	// 正确，c_str函数的返回值是一个C风格的字符串。即函数的返回结果是一个指针，且返回的指针类型是:const char*
 ```
+
+可以理解为，**在C++中，C风格字符串可以很容易转为string，但是string不能直接转为C风格字符串，需要通过内置函数c_str()操作**；
 
 **比较字符串**
 
@@ -9829,7 +9838,7 @@ auto const p = alloc.allocate(n);	// 分配n个未初始化的string，为n个st
 
 - **标准库allocator类及其算法**
   - `allocator<T> a;`——定义了一个名为a的allocator对象，它可以为类型为T的对象分配内存；
-  - `a.allocate(n);`——分配一段<font color="orange">原始的</font>、未构造的内存，保存n个类型为T的对象；
+  - `a.allocate(n);`——分配一段<font color="orange">原始的</font>、未构造的内存，保存n个类型为T的对象，返回指向这片空间的指针；
   - `a.deallocate(p, n);`——释放从T*指针p中地址开始的内存，这块内存保存了n个类型为T的对象；调用之前，一般需要先调用destory。
   - `a.construct(p, args);`——p必须是一个类型为T*的指针，指向一块<font color="orange">原始内存</font>；arg传递给类型为T的构造函数；
   - `a.destroy(p);`——p为`T*`类型的指针，此算法对p指向的对象执行析构函数；
@@ -9868,6 +9877,8 @@ alloc.construct(q++, "hi");		// *q为hi
 
   - `uninitialized_copy(b, e, b2);`——从迭代器(b, e)指出的输入范围中拷贝元素到迭代器b2指定的未构造的原始内存中，要求b2指向的内存必须足够大。
 
+    <font color=blue>返回值</font>是一个指向复制结束的最后一个元素后面的位置的指针；
+  
     ```c++
     // 举例，假定有一个int的vector，希望将其内容拷贝到动态内存中，我们分配*2的动态内存空间，前一半空间保存vector，后一半保存一个定值
     auto p = alloc.allocate(vi.size() * 2);	// vi是vector数组，分配内存，但未构造
@@ -9878,7 +9889,7 @@ alloc.construct(q++, "hi");		// *q为hi
   - `uninitialized_copy_n(b, n, b2);`——从迭代器b指向的元素开始，拷贝n个元素到b2开始的内存中，<font color=blue>返回</font>**指向最后一个复制元素之后位置的迭代器**。
 
   - `uninitialized_fill(b, e, t);`——从迭代器(b, e)指定的原始内存范围中创建对象，对象**值均为t**的拷贝。
-
+  
   - `uninitialized_fill_n(b, n, t);`——从迭代器b指向的内存地址开始创建n个对象，b需要指向足够大的的未构造的初始内存。
 
 ### 设计一个文本查询程序

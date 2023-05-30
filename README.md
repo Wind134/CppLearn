@@ -18,6 +18,12 @@
 
 一些经典的算法需要熟练使用，比如二分查找，归并排序，这些算法是后续做题时的基础工具。
 
+---
+
+经过一段时间的学习，上面的大多问题有了一定的进步，在C++学习过程中，许多知识点都跟着源码走了一遍，详见[链接](https://github.com/Wind134/CPP_Primier_SourceCodes)；
+
+同时将笔记上传，笔记[链接](https://github.com/Wind134/CppLearn/blob/main/C%2B%2B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md)；
+
 ### *注意事项* 
 - 所有的源码当中包含`using namespace std;`是因为都是刷算法题的CPP文件，头文件慎用这种写法！
 
@@ -45,7 +51,7 @@
 #### 进阶操作
 
 **情形一：** 在没有进行push之前，撤销commit：
-  
+
 - `git reset HEAD^`——不删除工作空间提交的代码，但撤销commit，且撤销`git add .`操作；
 
 - `git reset --soft HEAD^`——不删除工作空间提交的代码，撤销commit，但不撤销`git add .`操作；
@@ -79,5 +85,4 @@
     - 添加ssh方式：`git remote add origin git@github.com:Wind134/CppLearn.git`
 
     - 推送到远程仓库：`git push -u origin main`
-
 
