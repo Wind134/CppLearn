@@ -10133,17 +10133,73 @@ Word read was "foo": Length too short
 
 ---
 
-# C++语句
+# 高级主题
 
-## 异常处理
+## 标准库特殊设施
+
+这部分的源码已经看完，笔记的补充情况看后续安排
+
+### tuple类型
+
+### bitset类型
+
+### 正则表达式
+
+### 随机数
+
+### IO库再探
+
+## 用于大型程序的工具
+
+大规模编程对程序设计语言的要求更高，包括：
+
+- 在独立开发的子系统之间协同处理错误的能力；
+- 使用各种库(包含独立开发的库)进行协同开发的能力；
+- 对比较复杂应用概念建模的能力；
+
+### 异常处理
+
+该机制允许程序独立开发的部分能够在运行时就出现的问题进行通信并作出相应的处理；
 
 典型的异常包括失去数据库连接以及遇到意外输入等。处理反常行为是设计所有系统最难的一部分。
 
-异常处理包括：
+异常处理包括以下几点：
 
-- throw表达式：异常检测部分使用throw表达式来表示它遇到了无法处理的问题。throw raise了异常。
-- try语句块(try block)：异常处理部分使用try语句块处理异常。try语句块以关键字try开始，并以一个或多个catch子句结束。因为catch子句“处理”异常，所以它们也被称作异常处理代码(exception handler)。
-- 一套异常类(exception class)。
+#### 抛出异常
+
+抛出异常通过throw进行；
+
+- **throw表达式**
+
+  异常检测部分使用throw表达式来表示它遇到了无法处理的问题。当执行一个throw时，跟在throw后面的语句将不再被执行，控制权直接从throw转移到了与之匹配的catch模块：
+
+  - catch可能是同一个函数中的局部catch；
+  - 也可能是位于直接或间接调用了发生异常的函数的另一个函数中；
+
+  有点类似return，后面的语句不再执行；
+
+  寻找与异常匹配的catch子句的过程称为**栈展开**过程，当throw出现在一个try语句块中，顺序：
+
+  - 检查与该try关联的catch子句，如果没找到；
+  - 则继续检查与外层try匹配的catch子句；
+  - 如果还找不到，即退出当前函数，去外层函数中寻找；
+
+  如果最终仍找不到，程序将调用标准库函数terminate函数；
+
+  **try语句块(try block):** 异常处理部分使用try语句块处理异常。try语句块以关键字try开始，并以一个或多个catch子句结束。因为catch子句“处理”异常，所以它们也被称作异常处理代码(exception handler)。
+
+  try语句块示例：
+
+  ```c++
+  try {
+      program-statements
+  } catch (exception-declaration) {
+      handler-statements
+  } catch (exception-declaration) {
+      handler-statements
+  }	// ....
+  ```
+
 
 ```c++
 if (item1.isbn() != item2.isbn())
@@ -10151,27 +10207,51 @@ if (item1.isbn() != item2.isbn())
 cout << item1 + item2 << endl;
 ```
 
-## try语句块
-
-```c++
-try {
-    program-statements
-} catch (exception-declaration) {
-    handler-statements
-} catch (exception-declaration) {
-    handler-statements
-}	// ....
-```
-
-catch子句包括三部分：关键字catch、括号内一个(可能未命名的)对象的声明(异常声明，exception declaration)以及一个块。当选中了某个catch子句处理异常之后，执行与之对应的块。catch一旦完成，程序跳转到try语句块最后一个catch子句==之后==的那条语句继续执行。
-
-一个try语句块可能调用了包含另一个try语句块的函数，新的try语句块可能调用了包含又一个try语句块的新函数。寻找处理代码的过程与函数调用链刚好相反。当异常抛出，首先搜索抛出该异常的函数。如果没有找到匹配的catch子句，终止该函数，并在调用该函数的函数中继续寻找。以此类推，直到找到适当类型的catch子句为止。
-
-若程序最终还是没能找到任何匹配的catch子句，程序转到名为terminate的标准库函数。该函数的行为与系统有关，一般来说，执行该函数将导致程序非正常退出。
-
 异常类型只定义了一个名为what的成员函数，该函数没有任何参数，<font color="blue">返回</font>值是一个指向C风格字符串的const char*。what函数<font color="blue">返回</font>的C风格字符串的内容与异常对象的类型有关。如果异常类型又一个字符串初始值，则what<font color="blue">返回</font>该字符串。
 
----
+#### 捕获异常
+
+捕获异常通过catch子句来进行；
+
+- **catch子句**
+
+  catch子句包括：
+
+  - 一个(可能未命名的)对象的声明(异常声明，exception declaration)，看起来像是只包含一个形参的函数形参列表
+  - 以及一个块{}。
+
+  在查找匹配的处理代码的过程中，**越是专门的catch越应该置于整个catch列表的前端**；
+
+  当选中了某个catch子句处理异常之后，执行与之对应的块。catch一旦完成，**程序跳转到try语句块最后一个catch子句之后的那条语句继续执行**。
+
+  有时候一个单独的catch语句不能完整的处理某个异常，因此一条catch语句可以通过**重新抛出**的方式将异常传递给另一个catch语句：
+
+  ```c++
+  catch (my_error &eObj) {	// 引用类型
+      eObj.status =errCodes::serverErr;	// 修改了异常对象
+      throw;
+  } catch (other_error eObj) {		// 非引用类型
+      eObj.status =errCodes::badErr;	// 只修改了异常对象的局部副本
+  }
+  ```
+
+  还可以通过catch捕获所有异常的处理代码：
+
+  ```c++
+  void manip() {
+      try {
+          // 这里的操作将引发并抛出一个异常
+      }
+      catch (...) {	// 捕获所有异常的处理代码
+          // 处理异常的某些特殊操作
+          throw;
+      }
+  }
+  ```
+
+#### try语句块与构造函数
+
+
 
 # main函数处理命令行选项
 
