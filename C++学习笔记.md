@@ -5270,6 +5270,164 @@ public:
 
 #### <font color=red>留坑</font>
 
+## 多重继承与虚继承
+
+从多个直接基类中产生派生类本身是一个非常简单的概念，但是多个基类相互交织产生的细节会带来错综复杂的设计问题与实现问题；
+
+以下针对这些内容进行具体介绍
+
+### 多重继承
+
+我们通过一张图形象的展示：
+
+![](./Pics/多重继承与虚继承.svg)
+
+上面很形象的展示了多继承的从属关系以及继承的具体内容；
+
+接下来针对多继承的派生类分几个方面进行学习记录：
+
+- **派生类的构造函数**
+
+  构造一个派生类的对象将同时构造并初始化它的所有基类子对象；
+
+  派生类的构造函数初始值列表将实参分别传递给每个直接基类，其中基类的构造顺序与派生列表中基类的出现顺序保持一致：
+
+  - 首先初始化整个继承体系的最终基类ZooAnimal(该部分是顺着Bear来执行的，因为Bear会发现他还有个爹)；
+  - 初始化Panda的直接基类Bear；
+  - 初始化Panda的的第二个直接基类Endangered；
+  - 最后初始化Panda；
+
+  **不允许从多个基类中继承相同的构造函数**
+
+  ```c++
+  struct Base1 {
+      Base1() = dafault;
+      Base1(const std::string&);
+      Base1(std::shared_ptr<int>);
+  };
+  
+  struct Base2 {
+      Base2() = dafault;
+      Base2(const std::string&);
+      Base2(int);
+  };
+  
+  // 以下这个继承是错误的，因为都继承了D1:D1(const std::string&)
+  struct D1 : public Base1, public Base2 {
+      using Base1::Base1;
+      using Base2::Base2;
+  }
+  
+  // 修改版：我定义自己的版本，这样就不会管继承而来的两个打架的构造函数了
+  struct D1 : public Base1, public Base2 {
+      using Base1::Base1;
+      using Base2::Base2;
+      
+      D1(const string &s): Base1(s), Base2(s) { }
+      D1() = default;	 // 要出现默认构造，因为定义了自己的版本
+  }
+  ```
+
+- **派生类的析构函数**
+
+  析构函数的调用顺序与构造函数相反；
+
+- **多重继承的派生类的拷贝与移动操作**
+
+  记住两点：
+
+  - 派生类如果定义了自己的拷贝/赋值构造函数和赋值运算符，则必须在完整的对象上执行拷贝、移动或赋值操作；
+  - 只有使用合成版本的拷贝、移动或赋值成员时，才会自动对基类部分执行这些操作；
+
+### 类型转换与多个基类
+
+多个基类的情况与一个基类情况下类似，即派生类的指针或引用能自动转换成一个可访问基类的指针或引用；
+
+```c++
+void print(const Bear&);	// 引用参数
+
+void highlight(const Endangered&);	// 引用
+
+ostream& operator<<(ostream &, const ZooAnimal&);
+
+Panda ying_yang("ying_yang");	// ying_yang是一个Panda对象
+	
+print(ying_yang);     		// Panda是从Bear继承而来，基类部分是Bear，引用实现了派生类到基类的转换
+highlight(ying_yang); 		// Panda也是从Endangered继承而来，基类部分是Endangered
+cout << ying_yang << endl; 	// ZooAnimals重载了运算符，因此输出"ZooAnimal output operator"
+```
+
+基于指针类型或引用类型的查找与单继承的情形类似；
+
+### 多重继承下的类作用域
+
+只有一个基类的情况下，派生类的作用域嵌套在直接基类和间接基类的作用域中，查找过程沿着继承体系自底向上进行，直到找到所需名字；
+
+在多重继承的情况下，相同的查找过程在所有直接基类中同时进行，如果名字在多个基类中都被找到，则对该名字的使用**将具有二义性；**
+
+**解决潜在的二义性错误的最好方法:** 在派生类中为该函数定义一个新版本；
+
+### 虚继承
+
+在派生列表中同一个基类只能出现一次，但实际上派生类可以多次继承同一个类：
+
+- 通过两个不同的直接基类分别继承同一个间接基类；
+- 直接继承某个基类，然后通过另一个派生类再一次间接继承该类，这样最先继承的那个基类就被继承两次了；
+
+IO标准库的iostream就是通过方法1继承base_ios的；
+
+这样存在的一个问题就是：
+
+- base_ios由于既是istream也是ostream的基类，就会导致iostream继承两次base_ios，包括两个base_ios的子对象；
+- iostream对象是希望在同一个缓冲区进行读写操作，要求条件状态同时反应输入和输出操作，而base_ios就是负责保存流的缓冲内容并管理流的条件状态；
+- 这样就会导致iostream同意管理两个缓冲区，就是扯淡了；
+
+解决这个问题的方案就是**虚继承**
+
+**虚继承**令某个类作出声明，承诺愿意共享它的基类，其中共享的基类子对象称为**虚基类(virtual base class)** 
+
+简而言之就是解决继承多个基类子对象的问题，让后续间接继承该基类的派生类共享该基类，这样就只包含唯一一个共享的虚基类子对象；
+
+**虚派生只影响从指定了虚基类的派生类中进一步派生出的类**，它不会影响派生类本身；
+
+- 某个类指定了虚基类之后，该类的派生仍然按常规方式进行；
+
+**虚继承不影响向基类的类型转换**
+
+#### 虚继承与构造函数
+
+比较重要的一个知识点是**虚基类总是先于非虚基类构造，与它们在继承体系中的次序和位置都无关；**
+
+- 假设一个有一个类A，类B继承于A：`class B : public A;`
+- 类C继承B，但是将B看成虚基类：`class C : public virtual B;`
+
+构造函数的执行顺序：
+
+- 先执行虚基类B的构造，在执行虚基类B的构造时由于B继承自A，又会先去执行A的构造，然后完成B的构造；
+- 执行C的构造；
+
+看一段代码的例子：
+
+```c++
+class Character { /*...*/ };
+class BookCharacter : public Character { /*...*/ };
+class ToyAnimal { /*...*/ };
+class TeddyBear : public BookCharacter,
+					public Bear,	// Bear中有虚基类ZooAnimal
+					public virtual ToyAnimal { /*...*/ };
+
+TeddyBear t;	// 对于这个对象，构造执行的过程
+
+ZooAnimal();	// Bear中存在虚基类ZooAnimal，因此会执行ZoomAnimal的构造
+ToyAnimal();	// 第二个是直接虚基类ToyAnimal，执行该虚基类的构造函数
+Character();	// 虚基类的构造任务都完成了，之后处理非虚基类，按序是BookCharacter最先，但是BookCharacter又继承自Character
+BookCharacter();	// Character构造完成之后，执行BookCharacter的构造
+Bear();			// 继续按序，由于虚基类ZooAnimal的构造已经执行过，因此不再执行，而是执行Bear()
+TeddyBear();	// 最后一个就是自身的构造了
+```
+
+**析构则与构造函数的顺序相反**；
+
 ---
 
 # 模板与泛型编程
@@ -10250,6 +10408,100 @@ cout << item1 + item2 << endl;
   ```
 
 #### try语句块与构造函数
+
+try语句块需要处理构造函数初始值抛出的异常：
+
+```c++
+template <typename T>
+Blob<T>::Blob(std::initializer_list<T> il)	try :
+	data(std::make_shared<std::vector<T>> (il)) {}
+	catch(const std::bad_alloc &e) { handle_out_of_memory(e); }	// 空间不足下的异常处理
+```
+
+处理构造函数初始值异常的唯一办法就是将构造函数写成函数try语句块；
+
+#### noexcept异常说明
+
+告知用户以及编译器，某个函数不会抛出异常，C++ 11新标准通过关键字**noexcept**说明某个函数不会抛出异常：
+
+```c++
+void recoup(int) noexcept;	// 不会抛出异常
+void alloc(int);	// 可能抛出异常
+```
+
+noexcept的出现位置：
+
+- 如果是尾置返回类型，则出现在尾置返回类型之前；
+- 要跟在const以及引用限定符之后；
+- 要在final、override或虚函数的=0之前；
+
+**编译器不会在编译时检查noexcept说明**
+
+```c++
+void f() noexcept
+{
+    throw exception();	// 仍然编译通过，但有些编译器会给出警告
+}
+```
+
+**异常说明可接实参**
+
+```c++
+void recoup(int) noexcept(true);	// 承诺不会抛出异常
+void recoup(int) noexcept(false);	// alloc可能会抛出异常
+```
+
+**noexcept即可做关键字，也可做运算符**
+
+如果做运算符则是一个一元运算符，返回值是一个bool类型的右值常量表达式；
+
+```c++
+noexcept(recoup(i));	// recoup不抛出异常为true
+
+void f() noexcept(noexcept(g()));	// f与g的异常说明保持一致
+```
+
+**一个虚函数承诺了它不会抛出异常，则后续派生出来的虚函数也需要给出同样的承诺**
+
+**如果基类的虚函数允许抛出异常，则派生类的对应函数既可以允许抛出异常，也可以不允许抛出异常**
+
+### 异常类
+
+#### 异常类层次说明
+
+标准库异常类主要是以下继承体系：
+
+exception是基类：是在程序执行过程中发生的特殊情况或错误的对象
+
+- bad_cast: 类型转换过程中发生类型不匹配情况下抛出异常的类；
+- runtime_error: 程序运行过程中发生的一般性错误；
+  - overflow_error: 数值计算时发生溢出错误时抛出的异常；
+  - underflow_error: 数值计算时发生下溢错误时抛出的异常；
+  - range_error: 在进行范围检查时，值超出了有效范围而引发的异常；
+- logic_error: 表示在程序逻辑上的错误或违反了预期条件导致的异常；
+  - domain_error: 当参数的值落在函数定义域之外而引发异常时使用；
+  - invalid_argument: 表示提供了无效的参数值而导致的异常；
+  - out_of_range: 当使用超出有效范围的索引或迭代器访问容器元素时引发的异常；
+  - length_error: 在执行长度相关操作时，长度超出了有效范围而引发的异常；
+- bad_alloc: 在动态内存分配失败时抛出的异常；
+
+所有这些都是一个类，一个专门用于异常处理的对象；
+
+**我们可以基于上述标准库定义的类，去派生我们自己的错误处理类**
+
+这方面又可以结合类的继承部分进行加强学习；
+
+### 命名空间
+
+这部分先行略过，不是很难；
+
+#### 命名空间定义
+
+#### 使用命名空间成员
+
+#### 类、命名空间与作用域
+
+#### 重载与命名空间
 
 
 
