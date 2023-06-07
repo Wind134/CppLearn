@@ -10253,6 +10253,69 @@ cout << item1 + item2 << endl;
 
 
 
+## 特殊工具和技术
+
+### 枚举类型
+
+**枚举类型**(enumeration)使我们可以将一组整型常量组织在一起，每个枚举类型定义了一种新的类型，枚举属于字面值常量类型；
+
+C++支持两种枚举：
+
+- 限定作用域的枚举，**C++11新标准引入**限定作用域的枚举类型；
+
+  具体形式：
+
+  ```c++
+  enum class open_modes {input, output, append};	// 一个名为open_modes的枚举类型，包含了三个枚举成员: input、output、append
+  ```
+
+- 不限定作用域的枚举
+
+  具体形式：
+
+  ```c++
+  enum color {red, yellow, green};	// 不限定作用域的枚举类型
+  enum {floatPrec = 6, doublePrec = 10, double_doublePrec = 10};	// 未命名的、不限定作用域的枚举类型
+  
+  // (限定作用域的)枚举常量的类型默认是整型(int)，可以通过一些方式改变该默认类型
+  enum : char {
+      MONDAY,
+      TUESDAY,
+      WEDNESDAY
+  };
+  ```
+
+  由于enum是未命名的，我们只能在定义该enum时定义它的对象；
+
+以上考虑到作用域，而限定或者非限定作用域，针对**枚举成员**的访问是我们应该考虑的点，主要是弄清限定作用域的枚举成员和不限定作用域的枚举成员的访问区别：
+
+```c++
+enum color {red, yellow, green};
+enum stoplight {red, yellow, green};	// 错误，重复定义
+enum class peppers {red, yellow, green};	// 正确：枚举成员被隐藏
+
+color eyes = green;	// 定义一个新的枚举变量eyes，green在全局作用域中
+peppers p = green;	// peppers的green成员不在有效的作用域中，color的green成员在，但是类型不是peppers
+
+color hair = color::red;	// 正确，显式访问
+peppers p2 = peppers::red;	// 正确，显式访问
+```
+
+默认情况下，枚举值从0开始，依次增1，但我们亦可指定专门的值：
+
+```c++
+enum class intTypes {
+    clarTyp = 8, shortTyp = 16, int Typ = 16,	// 枚举值不一定唯一
+    longTyp = 32, long_longTyp = 64
+};
+```
+
+**枚举成员是const的，**因此在初始化枚举成员时提供的初始值必须是常量表达式；
+
+**要想初始化enum对象或者为enum对象赋值，必须使用该类型的一个枚举成员或者该类型的另一个对象；**
+
+一个不限定作用域的枚举类型的对象或枚举成员自动地转换成整型，但是**限定作用域的枚举类型不会进行隐式转换**；
+
 # main函数处理命令行选项
 
 比如我们编译了这么一个程序：prog
