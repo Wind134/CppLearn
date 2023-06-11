@@ -5417,24 +5417,53 @@ int compare(const T & v1, const T &v2)
 模板以关键字template开始，后跟一个**模板参数列表(template parameter list)，**这是一个逗号分隔的一个或多个**模板参数**的列表，用"< >"包围起来；
 
 - <font color=red>模板参数不可为空；</font>
+
 - 使用模板时，我们(隐式或显式)指定**模板实参(template argument)，**将其绑定到模板参数上；
+
+  - 通过代码展示，显式或隐式的情形：
+
+    ```c++
+    // 我定义了这么一个函数模板
+    template <typename T>
+    void printValue(T value) {
+        std::cout << value << std::endl;
+    }
+    
+    
+    printValue<int>(x);   // 显式指定模板参数类型为int
+    printValue(y);        // 隐式推导模板参数类型，具体类型取决于y的类型
+    ```
+
 
 同时我记录一下我对`typename`的理解：
 
-- 在C++中，`typename`指明其后的参数是类型，而不是值；
+- 在C++中`typename`指明其后的参数是类型，而不是值；
 
-- 在非类型模板参数中，`typename`允许我们使用非类型名表示类型，而不产生与现有非类型模板参数的冲突；
+- 在非类型模板参数中`typename`允许我们使用非类型名表示类型，而不产生与现有非类型模板参数的冲突；
 
   ```c++
-  template <int x>
-  struct A {
-      typedef int x;   // 错误, x已经被声明成了非类型的模板参数
+  // 下面是一个类模板，value_type是一个类型的表示
+  // 该类中又包含一个类Inner，其中又定义了一个value_type为T*类型
+  template <typename T>
+  struct MyContainer {
+      using value_type = T;
+  
+      struct Inner {
+          using value_type = T*;
+      };
   };
   
-  template <int x> 
-  struct B {
-      typedef typename A<x>::x x; // 正确, typename允许我们使用x作为一个嵌套的typedef 
-  };
+  // 这是一个函数模板，将Container本身作为一个类型
+  template <typename Container>
+  void printValueType() {
+      // 使用typename标识嵌套的类型别名value_type
+      // 如果没有typename关键字，没人知道value_type是关键字还是
+      // 成员变量，同时没有该关键字，编译器默认会将其视为一个静态成员
+      // 变量，因此在这里typename起到的作用是让非类型名表示类型
+      typename Container::value_type value;
+  
+      std::cout << "Type: " << typeid(value).name() << std::endl;
+  }
   ```
 
 - 访问嵌套类或嵌套类型时进行作用域解析；
