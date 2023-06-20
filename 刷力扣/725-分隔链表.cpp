@@ -70,11 +70,11 @@ vector<ListNode*> splitListToParts(ListNode* head, int k)
 
             for (int i = 0; i < tag_count && move_ptr->next->next != nullptr; i++)
             {
-                if(i == tag_count - 1)
+                if(i == tag_count - 1)  // 本数组元素内的最后一个需要特殊处理，其他的正常处理
                 {
-                    ListNode* temp = move_ptr->next;
-                    move_ptr->next = move_ptr->next->next;
-                    temp->next = nullptr;
+                    ListNode* temp = move_ptr->next;        // 临时保存move_ptr指向的那个地址
+                    move_ptr->next = move_ptr->next->next;  // 完成move_ptr的移动使命，指向下一个数组的头节点
+                    temp->next = nullptr;   // 将本数组的最后一个元素的next指向空
                 }
                 else move_ptr->next = move_ptr->next->next;
             }
