@@ -1,0 +1,105 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node // 通过typedef简化写法的步骤
+{
+    int data;
+    struct Node* next;
+} node;
+
+
+void visitList(node* head)
+{
+    node* move = head;
+    while(move != NULL)
+    {
+        printf("%d ", move->data);
+        move = move->next;
+    }
+}
+
+node* reverseList(node* head)   // 传入的头结点是要翻转的链表节点
+{
+    node* point_to_head = (node*)malloc(sizeof(node));
+
+    node* move = head;
+
+    if (move != NULL)
+    {
+        node* new_node = (node*)malloc(sizeof(node));
+        new_node->data = move->data;
+        new_node->next = NULL;
+        point_to_head->next = new_node;
+        move = move->next;
+    }
+    while (move != NULL)
+    {
+        node* new_node = (node*)malloc(sizeof(node));
+        new_node->data = move->data;
+        new_node->next = point_to_head->next;
+        point_to_head->next = new_node;
+        move = move->next;
+    }
+
+    node* result = point_to_head->next;
+
+    free(point_to_head);
+
+    return result;
+    
+}
+
+
+node* createList(int a[], int size)
+{
+    node* head = (node*)malloc(sizeof(node));
+
+    node* move = head;
+
+    for (int i = 0; i < size; i++)
+    {
+        if (i != size - 1)
+        {
+            node* new_node = (node*)malloc(sizeof(node));
+            move->data = a[i];
+            move->next = new_node;
+            move = move->next;
+        }
+        else
+        {
+            move->data = a[i];
+            move->next = NULL;
+        }            
+    }
+
+    return head;
+}
+
+
+int main()
+{
+    int length;
+    printf("Please input the length of array: ");
+    scanf("%d", &length);
+
+    int array[length];
+
+    for (int i = 0; i < length; i++)    scanf("%d", &array[i]);
+
+    node* head = createList(array, length);
+
+    printf("------------------------\n");
+
+    visitList(head);
+
+    printf("\nList Established!\n");
+
+    node* reverse_head = reverseList(head);
+    
+    visitList(reverse_head);
+
+    printf("\nList Reversed Success!\n");
+
+    return 0;
+    
+}
