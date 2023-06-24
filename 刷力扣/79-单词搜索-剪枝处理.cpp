@@ -19,14 +19,6 @@ bool result = false;
 int row_orient[4] = {-1, 1, 0, 0};
 int col_orient[4] = {0, 0, -1, 1};
 
-// 判断有效点
-bool isValid(const vector<vector<char>>& board, int i, int j, const vector<vector<bool>>& tag)
-{
-    int row = board.size();
-    int col = board[0].size();
-    return (i >= 0 && i < row && j >= 0 && j < col && !tag[i][j]);
-}
-
 
 void backtrace(const vector<vector<char>>& board, const string& word, int i, int j, int index, vector<vector<bool>>& tag)
 {
@@ -51,7 +43,8 @@ void backtrace(const vector<vector<char>>& board, const string& word, int i, int
         int new_col = j + col_orient[k];
 
         // 下面这个if保证了只有存在符合要求的条件才会去递归
-        if(isValid(board, new_row, new_col, tag) && board[new_row][new_col] == word[index + 1])
+        if(new_row >= 0 && new_row < row && new_col >= 0 && new_col < col &&
+            !tag[new_row][new_col] && board[new_row][new_col] == word[index + 1])
         {
             tag[new_row][new_col] = true;
             backtrace(board, word, new_row, new_col, index + 1, tag);
