@@ -1,4 +1,4 @@
-
+/* 发生重复的一律删除 */
 #include <iostream>
 #include <memory>
 #include <vector>
