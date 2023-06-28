@@ -21,16 +21,13 @@ void backtrace(const vector<int>& nums, int index, vector<int>& vec_of_result)
         result.push_back(vec_of_result);
         return;
     }
-    
-    // 不选当前的index，先记下当前的初始值，以便函数执行后的恢复
-    auto temp_vec = vec_of_result;
-    backtrace(nums, index + 1, vec_of_result);
-    vec_of_result = temp_vec;   // 恢复在下一个位置处理之前的状态，进行下面的选择处理
-    
+
     // 选中当前index
     vec_of_result.push_back(nums[index]);
     backtrace(nums, index + 1, vec_of_result);
-
+    vec_of_result.pop_back();
+    
+    backtrace(nums, index + 1, vec_of_result);    
 }
 
 vector<vector<int>> subsets(vector<int>& nums)
