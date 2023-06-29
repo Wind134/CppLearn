@@ -49,6 +49,26 @@ node* reverseList(node* head)   // 传入的头结点是要翻转的链表节点
     
 }
 
+node* reverseList_new_method(node* head)   // 传入的头结点是要翻转的链表节点，该方法是直接基于链表原地修改
+{
+    node* new_head = head;
+    node* prev = head;
+    node* curr = head->next;
+
+    while (curr != NULL)
+    {
+        prev->next = curr->next;
+        curr->next = new_head;
+        new_head = curr;
+
+        curr = prev->next;
+    }
+    
+    return new_head;
+}
+
+
+
 
 node* createList(int a[], int size)
 {
@@ -98,7 +118,13 @@ int main()
     
     visitList(reverse_head);
 
-    printf("\nList Reversed Success!\n");
+    printf("\nList Reversed Success With Method1!\n");
+
+    node* another_reverse_head = reverseList_new_method(head);
+
+    visitList(another_reverse_head);
+
+    printf("\nList Reversed Success With Method2!\n");
 
     return 0;
     
