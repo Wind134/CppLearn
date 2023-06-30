@@ -10394,32 +10394,61 @@ cout << item1 + item2 << endl;
 
 #### try语句块与构造函数
 
+---
 
+# C++特性的深入理解
 
-# main函数处理命令行选项
+## 智能指针模块
 
-比如我们编译了这么一个程序：prog
+**weak_ptr存在的意义**
 
-这个程序会附带一些命令选项，比如我们执行：`prog -d -o ofile data0`
-
-这些命令行通过两个(可选的)形参传递给main函数：`int main(int argc, char *argv[])`
-
-现在上述的这些命令选项我们想要将他们连接成一个字符串(string)，并输出！示例代码：
+当使用多个智能指针shared_ptr时，如果出现了指针之间的相互指向，从而形成环的情况，类似于死锁现象，在这种情况下智能指针往往不能正常调用对象的析构函数，从而造成内存泄漏。这种情况被称为循环引用：
 
 ```c++
 #include <iostream>
-#include <string>
-int main (int argc, char *argv[])
-{ 
-	std::string str;
-	for (auto i = 1; i < argc; ++i)
-		str = str + argv[i] + " ";
-	std::cout << str << std::endl;
-	return 0;
+#include <memory>
+
+class A;
+class B;
+
+class A {
+public:
+    std::shared_ptr<B> b_ptr;
+    ~A() { std::cout << "A deleted" << std::endl; }
+};
+
+class B {
+public:
+    std::shared_ptr<A> a_ptr;
+    ~B() { std::cout << "B deleted" << std::endl; }
+};
+
+int main() {
+    auto a = std::make_shared<A>();	// a为指向A对象的智能指针
+    auto b = std::make_shared<B>();	// b为指向B对象的智能指针
+    a->b_ptr = b;	// a智能指针指向的A对象中中的b_ptr又指向B
+    b->a_ptr = a;	// b智能指针指向的B对象中中的a_ptr又指向A
+    return 0;
 }
 ```
 
-这样就实现了我们的目的！
+当main()函数执行时，首先创建了一个指向A对象的智能指针a和一个指向B对象的智能指针b，然后将a中的b_ptr指向b，并将b中的a_ptr指向a，形成了循环引用：
+
+![](./Pictures/循环引用.svg)
+
+当main函数执行结束，智能指针a决定销毁A对象，也就是执行A对象的析构，智能指针b决定销毁B对象，执行B对象的析构；
+
+但是智能指针shared_ptr只根据引用计数管理对象的生命周期；
+
+而循环引用导致引用计数永远无法归零：
+
+- 想要销毁A，B在引用A；
+- 那我先去销毁B，结果A又在引用B；
+- 彻底死锁；
+
+解决这个问题的方案则是**使用weak_ptr**，weak_ptr是⼀种只观察不控制对象⽣命周期的智能指针，它指向⼀个shared_ptr管理的对象：
+
+- 换句话说，他不会影响指向对象的引用计数，可以完全避免上述的死锁问题，它不会干扰shared_ptr的对象生命周期管理；
 
 ---
 
@@ -10427,7 +10456,7 @@ int main (int argc, char *argv[])
 
 1、char与int之间的类型转换，直接转换是不行的，转换的是字符的ASCII码。
 
-2、==赋值运算的优先级较低==，而赋值语句会经常出现在条件当中。因赋值运算的优先级相对较低，所以通常需要给赋值部分加上括号使其符合我们的原意！
+2、**赋值运算的优先级较低**，而赋值语句会经常出现在条件当中。因赋值运算的优先级相对较低，所以通常需要给赋值部分加上括号使其符合我们的原意！
 
 3、除非必须，否则不用递增递减运算符的后置版本！
 
@@ -10464,6 +10493,31 @@ int main (int argc, char *argv[])
 - 更改p1的值不会影响p2的值，但是如果更改的是指针p1指向的内容的值；
 - 那p2指向的那片空间的内容自然也发生改变了；
 
+15、**main函数处理命令行选项：**
+
+比如我们编译了这么一个程序：prog
+
+这个程序会附带一些命令选项，比如我们执行：`prog -d -o ofile data0`
+
+这些命令行通过两个(可选的)形参传递给main函数：`int main(int argc, char *argv[])`
+
+现在上述的这些命令选项我们想要将他们连接成一个字符串(string)，并输出！示例代码：
+
+```c++
+#include <iostream>
+#include <string>
+int main (int argc, char *argv[])
+{ 
+	std::string str;
+	for (auto i = 1; i < argc; ++i)
+		str = str + argv[i] + " ";
+	std::cout << str << std::endl;
+	return 0;
+}
+```
+
+这样就实现了我们的目的！
+
 ---
 
 # 代码报错总结
@@ -10499,3 +10553,10 @@ int main (int argc, char *argv[])
 3、在循环遍历数组或者说字符串的时候，我们要记得要控制索引下标在字符串长度范围内，一定要防止出现越界错误。
 
 4、在定义vector变量后，进行初始化之后，如果我们进行push_back会直接在初始化变量的后面添加数据，所以尽可能不用多此一举，或者换用下标的形式。
+
+---
+
+# 
+
+
+
