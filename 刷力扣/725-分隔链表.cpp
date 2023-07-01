@@ -9,16 +9,9 @@
 */
 #include <iostream>
 #include <vector>
+#include "../headfile/ListNode.h"
 using namespace std;
 
-struct ListNode
-{
-    int val;
-    ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
 
 vector<ListNode*> splitListToParts(ListNode* head, int k)
 {
@@ -85,28 +78,6 @@ vector<ListNode*> splitListToParts(ListNode* head, int k)
     return result;
 }
 
-ListNode* createList(ListNode* head, const vector<int>& input_array)    // 不带指向头结点指针的链表
-{
-    ListNode* move_point = new ListNode();
-    move_point->next = head;
-    for (auto it = input_array.begin(); it != input_array.end(); it++)
-    {
-        move_point->next->val = *it;
-
-        if (it != input_array.end() - 1)    // 在处理最后一个元素之前，每次都需要建立一个新结点
-        {
-            ListNode* new_node = new ListNode(); // 建立一个新结点
-
-            move_point->next->next = new_node;  // 指针指向的结点又指向这个新结点
-
-            move_point->next = new_node;        // 更新move_point的指向
-        }
-    }
-    delete(move_point);
-
-    return head;
-    
-}
 
 int main()
 {
@@ -125,15 +96,13 @@ int main()
 
     cin >> k;
 
-    ListNode* init_head = new ListNode();
-
-    ListNode* list_head = createList(init_head, input); // 不带指向头结点的指针
+    ListNode* list_head = createList(input); // 不带指向头结点的指针
 
     auto result = splitListToParts(list_head, k);
 
     for(const auto& vec : result)   // vec保存的应当是每一个链表的头结点
     {
-        init_head = vec;
+        ListNode* init_head = vec;
         while (init_head != nullptr)
         {
             cout << init_head->val << " ";
@@ -144,48 +113,3 @@ int main()
     }
     return 0;
 }
-
-
-// 下面这个注释是debug之用
-// ListNode* test = head;
-// while (test != nullptr)
-// {
-//     cout << test->val << " ";
-//     test = test->next;
-// }
-
-// for (auto elem : list_len)   cout << elem << " ";
-
-
-// ListNode* test = move_ptr;
-// while (test -> next != nullptr)
-// {
-//     cout << test->next->val << " ";
-//     test -> next= test->next->next;
-// }
-
-// // 测试建立是否成功
-// init_head = list_head;
-
-// while(init_head != nullptr)
-// {
-//     cout << init_head->val << " ";
-//     init_head = init_head->next;
-// }
-
-// cout << "\nSuccess Established!" << endl;
-
-
-// 接下来这个while循环用来断每个子链表的链接
-// while(tag_count > 0 && move_ptr->next != nullptr)
-// {
-//     if (tag_count == 1 && move_ptr->next != nullptr)
-//     {
-//         ListNode* temp_node = move_ptr->next;
-//         move_ptr->next->next = nullptr;
-//         move_ptr->next = temp_node->next;
-//         break;
-//     }
-//     move_ptr->next = move_ptr->next->next;
-//     tag_count--;    
-// }   
