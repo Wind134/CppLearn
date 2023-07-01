@@ -14,44 +14,9 @@
 #include <iostream>
 #include <vector>
 #include <utility>
+#include "../headfile/TreeNode.h"
 using namespace std;
 
-struct TreeNode     // 这是一个二叉树结点
-{
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-
-// 通过链表的形式去创建一个二叉树(通过递归的方式去建立，好办法)
-TreeNode* createBinaryTree()
-{
-    int value;
-    cout << "Please input the val of node: (-1 represents null): ";
-    cin >> value;
-    if (value == -1)    return nullptr;
-
-    TreeNode* new_node = new TreeNode(value);
-
-    cout << "Go on input the left child of " << value << ":" << endl;
-    new_node->left = createBinaryTree();
-
-    cout << "Go on input the right child of " << value << ":" << endl;
-    new_node->right = createBinaryTree();
-
-    return new_node;
-}
-
-void visitBinaryTree(TreeNode* root)    // 采用中序遍历，main函数测试之用
-{
-    if (root == nullptr)    return;
-    visitBinaryTree(root->left);
-    cout << root->val << " ";
-    visitBinaryTree(root->right);
-}
 
 void getBinaryTreeInfo(TreeNode* root, vector<int>& vec)    // 采用中序遍历
 {
@@ -108,7 +73,9 @@ int main()
 
     recoverTree(root);
 
-    visitBinaryTree(root);
+    cout << "The correct inorder traversal result:";
+
+    inOrderTraversal(root);
     
     return 0;
 }

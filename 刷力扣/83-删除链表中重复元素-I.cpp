@@ -2,16 +2,9 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include "../headfile/ListNode.h"
 using namespace std;
 
-struct ListNode
-{
-    int val;
-    ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
 
 ListNode* deleteDuplicates(ListNode* head) 
 {
@@ -19,71 +12,49 @@ ListNode* deleteDuplicates(ListNode* head)
     
     // 以下两个指针构成了一个双指针
     ListNode* left = head;   // 定义一个前驱结点
-    ListNode* right = head;  // right是一个配合前驱的节点
-
-    int count = 0;  // 代表左右指针的距离，默认是1
+    ListNode* right = head;  // right是一个配合前驱的节点，他会不断的移动
 
     while(right != nullptr)
     {
         if (right->next != nullptr && right->val == right->next->val)
         {
             right = right->next;
-            count++;
         }
         else
         {
-            // 判断right与left之间相隔的距离
-            if(count >= 1)  // 如果count大于等于1，则必定有重复，需要进行处理
+            if (left != right)   // 这个if条件表明要进行删除处理
             {
-                ListNode* temp = right;
-                right = right->next;
-                ListNode* temp_head = left->next;    // 临时保存要清除的头结点
-            
-                temp->next = nullptr;          // 要删除的链表的最后一个指针指向空
-                left->next = right;            // 链表连接
-
-                // 释放已删除的结点空间
-                while (temp_head != nullptr) 
+                if(head->val == head->next->val)    // 头结点开始就有重复项则单独处理
                 {
-                    ListNode* to_delete = temp_head;
-                    temp_head = temp_head->next;
-                    delete to_delete;
+                    ListNode* temp = head;
+                    while (temp != right)
+                    {
+                        ListNode* to_delete = temp->next;
+                        delete(temp);
+                        temp = to_delete;
+                    }
+                    head = right;            // 更新头结点
                 }
-                // 释放完毕，重新初始化count
-                count = 0;
-                left = right;
+                else    // 常规情况
+                {
+                    ListNode* temp = left->next;
+                    while (temp != right)
+                    {
+                        ListNode* to_delete = temp->next;
+                        delete(temp);
+                        temp = to_delete;
+                    }
+                    left->next = right;            // 链表连接
+                }
             }
-            else    // 进入了else，表明不需要进行释放处理，因此常规更新left以及right
-            {
-                right = right->next;
-                left = right;
-            }
+            left = right;   // 将left与right再次保持一致
+            right = right->next;    // 处理下一个节点
         }
     }
 
     return head;
 }
 
-ListNode* createList(ListNode* head, const vector<int>& input_array)    // 不带指向头结点指针的链表
-{
-    ListNode* move_point = new ListNode();
-    move_point->next = head;
-    for (auto it = input_array.begin(); it != input_array.end(); it++)
-    {
-        move_point->next->val = *it;
-
-        if (it != input_array.end() - 1)    // 在处理最后一个元素之前，每次都需要建立一个新结点
-        {
-            ListNode* new_node = new ListNode(); // 建立一个新结点
-
-            move_point->next->next = new_node;  // 指针指向的结点又指向这个新结点
-
-            move_point->next = new_node;        // 更新move_point的指向
-        }
-    }
-    delete(move_point);
-    return head;   
-}
 
 int main()
 {
@@ -97,12 +68,11 @@ int main()
         if(cin.get() == '\n')   break;
     }
 
-    ListNode* init_head = new ListNode();
 
-    ListNode* list_head = createList(init_head, input);
+    ListNode* list_head = createList(input);
 
     // 测试建立是否成功
-    init_head = list_head;
+    ListNode* init_head = list_head;
 
     while(init_head != nullptr)
     {
@@ -114,16 +84,13 @@ int main()
 
     ListNode* result = deleteDuplicates(list_head);
 
-    init_head = result;
-
-    while(init_head != nullptr)
+    while(result != nullptr)
     {
-        cout << init_head->val << " ";
-        init_head = init_head->next;
+        cout << result->val << " ";
+        result = result->next;
     }
 
     cout << "\nDelete Success!" << endl;
 
     return 0;
-
 }

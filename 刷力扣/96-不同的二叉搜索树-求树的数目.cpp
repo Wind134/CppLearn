@@ -10,28 +10,11 @@
     - 假设两个子问题都生成了根节点的集合，也就是说左序列生成了左子树根节点的集合，右序列生成了右子树根节点的集合；
     - 那么对于i节点而言，从左子树集合中选取一颗左子树，右子树集合中选择一颗右子树，拼接，就实现了一个节点的生成；
 */
-
 #include <iostream>
 #include <vector>
+#include "../headfile/TreeNode.h"
 using namespace std;
 
-struct TreeNode     // 这是一个二叉树结点
-{
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-
-void visitBinaryTree(TreeNode* root)    // 采用先序遍历
-{
-    if (root == nullptr)    return;
-    cout << root->val << " ";
-    visitBinaryTree(root->left);
-    visitBinaryTree(root->right);
-}
 
 int generateTrees(int start, int end, vector<vector<int>>& map) // 参数处理为一个序列
 {
@@ -59,10 +42,5 @@ int main()
     vector<vector<int>> interval_map(input + 2, vector<int>(input + 2));    // 存储遍历过的区间节点，极大的剪枝
     auto output = generateTrees(1, input, interval_map);
     cout << output << endl;
-    // for(const auto& Tree : output)
-    // {
-    //     visitBinaryTree(Tree);
-    //     cout << endl;
-    // }
     return 0;
 }

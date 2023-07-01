@@ -6,16 +6,9 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include "../headfile/ListNode.h"
 using namespace std;
 
-struct ListNode
-{
-    int val;
-    ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
 
 ListNode* partition(ListNode* head, int x)
 {
@@ -29,7 +22,6 @@ ListNode* partition(ListNode* head, int x)
         prev = curr;
         curr = curr->next;
     }
-
 
     // 在这个地方，curr所代表的结点为第一个大于等于x的值的结点
     // 而prev代表的是该结点之前的那个结点
@@ -71,26 +63,6 @@ ListNode* partition(ListNode* head, int x)
     return head;
 }
 
-ListNode* createList(ListNode* head, const vector<int>& input_array)    // 不带指向头结点指针的链表
-{
-    ListNode* move_point = new ListNode();
-    move_point->next = head;
-    for (auto it = input_array.begin(); it != input_array.end(); it++)
-    {
-        move_point->next->val = *it;
-
-        if (it != input_array.end() - 1)    // 在处理最后一个元素之前，每次都需要建立一个新结点
-        {
-            ListNode* new_node = new ListNode(); // 建立一个新结点
-
-            move_point->next->next = new_node;  // 指针指向的结点又指向这个新结点
-
-            move_point->next = new_node;        // 更新move_point的指向
-        }
-    }
-    delete(move_point);
-    return head;    
-}
 
 int main()
 {
@@ -104,12 +76,10 @@ int main()
         if(cin.get() == '\n')   break;
     }
 
-    ListNode* init_head = new ListNode();
-
-    ListNode* list_head = createList(init_head, input);
+    ListNode* list_head = createList(input);
 
     // 测试建立是否成功
-    init_head = list_head;
+    ListNode* init_head = list_head;
 
     while(init_head != nullptr)
     {
@@ -126,12 +96,10 @@ int main()
 
     ListNode* result = partition(list_head, target);
 
-    init_head = result;
-
-    while(init_head != nullptr)
+    while(result != nullptr)
     {
-        cout << init_head->val << " ";
-        init_head = init_head->next;
+        cout << result->val << " ";
+        result = result->next;
     }
 
     cout << "\nProcess Success!" << endl;

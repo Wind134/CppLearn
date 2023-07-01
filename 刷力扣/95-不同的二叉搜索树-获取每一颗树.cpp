@@ -13,29 +13,11 @@
 
 * 改进，我们默认的回溯策略，会包含多个重复区间，而这些重复区间其实只需要计算一次，这样就起到了绝佳的剪枝作用    
 */
-
 #include <iostream>
 #include <vector>
+#include "../headfile/TreeNode.h"
 using namespace std;
 
-struct TreeNode     // 这是一个二叉树结点
-{
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-
-
-void visitBinaryTree(TreeNode* root)    // 采用先序遍历
-{
-    if (root == nullptr)    return;
-    cout << root->val << " ";
-    visitBinaryTree(root->left);
-    visitBinaryTree(root->right);
-}
 
 // 根本思想是把遍历过的区间产生根节点的集合放进一个矩阵中，这样就不需要重复计算了
 vector<TreeNode*> generateTrees(int start, int end, vector<vector<vector<TreeNode*>>>& map) // 参数处理为一个序列
@@ -56,8 +38,7 @@ vector<TreeNode*> generateTrees(int start, int end, vector<vector<vector<TreeNod
                
             auto rightTrees = generateTrees(i + 1, end, map);
             map[i + 1][end] = rightTrees;
-        }
-        
+        }       
 
         for(auto& leftTreesRootNode : map[start][i - 1])
         {
@@ -70,8 +51,7 @@ vector<TreeNode*> generateTrees(int start, int end, vector<vector<vector<TreeNod
                 allTrees.emplace_back(root);
             }
         } 
-    }
-    
+    }   
     return allTrees;
 }
 
@@ -84,9 +64,11 @@ int main()
     // 之所以分配多2的空间，是考虑了第一个和最后一个的两种特殊情况
     vector<vector<vector<TreeNode*>>> interval_map(input + 2, vector<vector<TreeNode*>>(input + 2, vector<TreeNode*>()));
     auto output = generateTrees(1, input, interval_map);
+    cout << "List all preorder traversal results:\n";
     for(const auto& Tree : output)
     {
-        visitBinaryTree(Tree);
+        bool first_visit = true;
+        preOrderTraversal(Tree, first_visit);
         cout << endl;
     }
     return 0;

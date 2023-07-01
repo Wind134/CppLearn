@@ -6,56 +6,25 @@
 
 * 验证的难点在于，根节点的孩子节点的孩子节点是不可控因素，因此我们可以采取中序遍历的方式
 */
-
 #include <iostream>
 #include <vector>
+#include "../headfile/TreeNode.h"
 using namespace std;
 
-struct TreeNode     // 这是一个二叉树结点
-{
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-
-// 通过链表的形式去创建一个二叉树(通过递归的方式去建立，好办法)
-TreeNode* createBinaryTree()
-{
-    int value;
-    cout << "Please input the val of node: (-1 represents null): ";
-    cin >> value;
-    if (value == -1)    return nullptr;
-
-    TreeNode* new_node = new TreeNode(value);
-
-    cout << "Go on input the left child of " << value << ":" << endl;
-    new_node->left = createBinaryTree();
-
-    cout << "Go on input the right child of " << value << ":" << endl;
-    new_node->right = createBinaryTree();
-
-    return new_node;
-}
-
-
-// void visitBinaryTree(TreeNode* root)    // 采用先序遍历
-// {
-//     if (root == nullptr)    return;
-//     cout << root->val << " ";
-//     visitBinaryTree(root->left);
-//     visitBinaryTree(root->right);
-// }
-vector<int> array;
+int value = MIN_INT;    // 定义一个下限值，因为这个数是用来比较大小的
 
 void visitBinaryTree(TreeNode* root, bool& tag)
 {
     if (root == nullptr || !tag)    return;
     visitBinaryTree(root->left, tag);
-    array.push_back(root->val);
-    if (array.size() > 1 && *(array.end() - 1) <= *(array.end() - 2))  tag = false;
+    if(root->val > value)
+    {
+        value = root->val;
+    }
+    else
+    {
+        tag = false;
+    }
     visitBinaryTree(root->right, tag);
 }
 
@@ -70,8 +39,17 @@ bool isValidBST(TreeNode* root)
 
 int main()
 {
-    TreeNode* root = createBinaryTree();
+    vector<int> input;
 
+    int input_data;
+
+    while (cin >> input_data)
+    {
+        input.push_back(input_data);
+        if(cin.get() == '\n')   break;
+    }
+
+    TreeNode* root = buildTreeWithVec(input, 0);
 
     cout << boolalpha << isValidBST(root) << endl;
     

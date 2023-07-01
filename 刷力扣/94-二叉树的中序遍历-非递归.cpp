@@ -5,46 +5,8 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+#include "../headfile/TreeNode.h"
 using namespace std;
-
-
-struct TreeNode     // 这是一个二叉树结点
-{
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-
-// 通过链表的形式去创建一个二叉树(通过递归的方式去建立，好办法)
-TreeNode* createBinaryTree()
-{
-    int value;
-    cout << "Please input the val of node: (-1 represents null): ";
-    cin >> value;
-    if (value == -1)    return nullptr;
-
-    TreeNode* new_node = new TreeNode(value);
-
-    cout << "Go on input the left child of " << value << ":" << endl;
-    new_node->left = createBinaryTree();
-
-    cout << "Go on input the right child of " << value << ":" << endl;
-    new_node->right = createBinaryTree();
-
-    return new_node;
-}
-
-// 上面成功进行了二叉树的创建，接下来测试遍历(中序)
-void inOrderRecursion(TreeNode* root)
-{
-    if (root == nullptr)    return;
-    inOrderRecursion(root->left);
-    cout << root->val << " ";
-    inOrderRecursion(root->right);
-}
 
 
 void inOrderIter(TreeNode* root)
@@ -73,9 +35,19 @@ void inOrderIter(TreeNode* root)
 }
 int main()
 {
-    TreeNode* root = createBinaryTree();
+    vector<int> input;
+
+    int input_data;
+
+    while (cin >> input_data)
+    {
+        input.push_back(input_data);
+        if(cin.get() == '\n')   break;
+    }
+
+    TreeNode* root = buildTreeWithVec(input, 0);
     cout << "Binary Tree Build!\n" << "Inorder with recursion: ";
-    inOrderRecursion(root);
+    inOrderTraversal(root);
     
     cout << "\nInorder with iteration: ";
     inOrderIter(root);

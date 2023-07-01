@@ -7,16 +7,8 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include "../headfile/ListNode.h"
 using namespace std;
-
-struct ListNode
-{
-    int val;
-    ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
 
 ListNode* reverseBetween(ListNode* head, int left, int right)
 {
@@ -73,26 +65,7 @@ ListNode* reverseBetween(ListNode* head, int left, int right)
 
 }
 
-ListNode* createList(ListNode* head, const vector<int>& input_array)    // 不带指向头结点指针的链表
-{
-    ListNode* move_point = new ListNode();
-    move_point->next = head;
-    for (auto it = input_array.begin(); it != input_array.end(); it++)
-    {
-        move_point->next->val = *it;
 
-        if (it != input_array.end() - 1)    // 在处理最后一个元素之前，每次都需要建立一个新结点
-        {
-            ListNode* new_node = new ListNode(); // 建立一个新结点
-
-            move_point->next->next = new_node;  // 指针指向的结点又指向这个新结点
-
-            move_point->next = new_node;        // 更新move_point的指向
-        }
-    }
-    delete(move_point);
-    return head;   
-}
 
 int main()
 {
@@ -106,17 +79,13 @@ int main()
         if(cin.get() == '\n')   break;
     }
 
-    ListNode* init_head = new ListNode();
+    ListNode* list_head = createList(input);    // 拷贝赋值，意味着对list_head的修改不会影响，但如果对它指向的内容进行修改就有事了
+    ListNode* save = list_head;
 
-    ListNode* list_head = createList(init_head, input);
-
-    // 测试建立是否成功
-    init_head = list_head;
-
-    while(init_head != nullptr)
+    while(list_head != nullptr)
     {
-        cout << init_head->val << " ";
-        init_head = init_head->next;
+        cout << list_head->val << " ";
+        list_head = list_head->next;
     }
 
     cout << "\nSuccess Established!" << endl;
@@ -125,14 +94,12 @@ int main()
     int left, right;
     cin >> left >> right;
 
-    ListNode* result = reverseBetween(list_head, left, right);
+    ListNode* result = reverseBetween(save, left, right);
 
-    init_head = result;
-
-    while(init_head != nullptr)
+    while(result != nullptr)
     {
-        cout << init_head->val << " ";
-        init_head = init_head->next;
+        cout << result->val << " ";
+        result = result->next;
     }
 
     cout << "\nReverse Success!" << endl;
