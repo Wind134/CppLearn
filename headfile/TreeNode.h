@@ -40,9 +40,9 @@ TreeNode* createBinaryTree()
 // 按照从上到下，从左到右的顺序给出节点值，如果相应位置没有节点，则以-1作为输入
 // 假设给出一个输入：{-10， 9，20，-1，-1，15，7}，代表根节点是-10，接下来根节点左右节点的值分别为9，20，9的左右结点不存在，即为-1
 // 20的左右节点值分别为15，7，逻辑上就是这么一个二叉树
-TreeNode* buildTreeWithVec(const std::vector<int>& nums, int index)
+TreeNode* buildTreeWithVec(const std::vector<int>& nums, int index = 0) // 给一个默认参数不影响什么吧，这是默认的起始位置
 {
-    if(index > nums.size() || nums[index] == -1)    return nullptr; // -1代表该节点不存在(注意权值为-1的情况即可)
+    if(index > nums.size() - 1 || nums[index] == -1)    return nullptr; // -1代表该节点不存在(注意权值为-1的情况即可)
 
     TreeNode* root = new TreeNode(nums[index]);
 
