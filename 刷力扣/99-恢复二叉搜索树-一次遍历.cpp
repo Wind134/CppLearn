@@ -46,6 +46,7 @@ void getBinaryTreeInfo(TreeNode* root)    // 采用中序遍历
                 return; // 这样处理效率更高，后续不需要再递归了
             }
             swap_node2 = root;
+            last_node = root;
         }
     }
     getBinaryTreeInfo(root->right);
