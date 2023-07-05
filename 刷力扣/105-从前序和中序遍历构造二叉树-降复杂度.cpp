@@ -16,7 +16,7 @@ using namespace std;
 map<int, int> elem_index;
 
 TreeNode* splitByIndex(const vector<int>& preorder, int begin_index_pre, int end_index_pre,  // pre中的起始位
-int begin_index_in, int end_index_in)    // 分别代表数组区间的起始点
+int begin_index_in, int end_index_in)    // 与之对应的，中序遍历中的起始位与结束位
 {
     // 临界点
     if (begin_index_pre >= preorder.size() || begin_index_pre > end_index_pre) return nullptr;
@@ -27,15 +27,15 @@ int begin_index_in, int end_index_in)    // 分别代表数组区间的起始点
 
     int index = elem_index[preorder[begin_index_pre]];   // 获取先序遍历中根节点的索引，以获取左右子树的索引
 
-    // 从这里可以直到，索引0~index - 1是左子树，index + 1~size - 1是右子树
+    // 从这里可以知道，索引(begin_index_pre + 1) ~ (index - begin_index_in + begin_index_pre)是左子树；
+    // (index - begin_index_in + begin_index_pre + 1) ~ (end_index_pre)是右子树；
     root->left = splitByIndex(preorder, begin_index_pre + 1, index - begin_index_in + begin_index_pre, begin_index_in, index - 1);
     root->right = splitByIndex(preorder, index - begin_index_in + begin_index_pre + 1, end_index_pre, index + 1, end_index_in);
 
     return root;
 } 
 
-TreeNode* buildTree(const vector<int>& preorder, const vector<int>& inorder)
-{
+TreeNode* buildTree(const vector<int>& preorder, const vector<int>& inorder) {
     if (preorder.size() == 0)   return nullptr; // 用哪个去表示size应该都行，反正大小必定一致
 
     if (elem_index.empty()) {
