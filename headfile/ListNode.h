@@ -1,6 +1,14 @@
 /* 自定义链表节点以及一些会频繁用到的操作 */
+#ifndef LISTNODE_H
+#define LISTNODE_H
+
 #include <iostream>
 #include <vector>
+
+#ifndef MIN_MAX
+const int& MIN_INT = -2147483648;
+const int& MAX_INT = 2147483647;
+#endif
 
 struct ListNode
 {
@@ -27,3 +35,5 @@ ListNode* createList(const std::vector<int>& input_array)    // 不带指向头�
     }
     return head;   
 }
+
+#endif // LISTNODE_H

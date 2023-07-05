@@ -1,9 +1,14 @@
 /* 刷题每次都要重写或者复制一些创建树，遍历树，这种重复操作可以包含在一个头文件中 */
+#ifndef TREENODE_H
+#define TREENODE_H
+
 #include <iostream>
 #include <vector>
 
-const int& MIN_INT = -2147483648;
-const int& MAX_INT = 2147483647;
+// #ifndef MIN_MAX
+// const int& MIN_INT = -2147483648;
+// const int& MAX_INT = 2147483647;
+// #endif
 
 // 这是一个二叉树结点的类定义(结构体)
 struct TreeNode
@@ -112,3 +117,5 @@ void postOrderTraversal(TreeNode* root)
     }
     else    std::cout << " " << root->val;
 }
+
+#endif
