@@ -1,5 +1,6 @@
 /* 这道题单独处理一下结点的构造 */
 #include "../headfile/io_for_leetcode.h"
+#include <queue>
 using namespace std;
 
 // 完美二叉树节点
@@ -56,6 +57,28 @@ Node* connect(Node* root) {
     return root;
 }
 
+// 这个函数实现了对该类结点的访问
+void visitNode(Node* root)
+{
+    queue<Node*> node_queue;
+
+    node_queue.push(root);  // 先将根结点入队
+    while (!node_queue.empty())
+    {
+        auto visit_node = node_queue.front();
+        while (visit_node)
+        {
+            if (visit_node->next)   cout << visit_node->val << " ";
+            else    cout << visit_node->val << " # ";
+            
+            if (visit_node->left)   node_queue.push(visit_node->left);
+            if (visit_node->right)  node_queue.push(visit_node->right);
+            visit_node = visit_node->next;
+            node_queue.pop();
+        }
+    }
+}
+
 int main()
 {
     input input116;
@@ -64,6 +87,10 @@ int main()
 
     auto root = buildTreeWithVec(vec);
 
-    // 输出省略掉，一个层序遍历即可
+    auto result = connect(root);
 
+    // 输出省略掉，一个层序遍历即可
+    visitNode(result);
+
+    return 0;
 }
