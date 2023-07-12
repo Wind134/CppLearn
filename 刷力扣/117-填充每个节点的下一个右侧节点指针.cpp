@@ -9,7 +9,6 @@
 #include "../headfile/io_for_leetcode.h"
 #include <queue>
 using namespace std;
-
 // 特殊结点的数据结构
 class Node {
 public:
@@ -67,7 +66,7 @@ Node* connect(Node* root) {
     else if (root->right)   begin = root->right;
     else return root;
 
-    while (begin)
+    while (begin)   // 每一行的begin，只要该begin不为空即可
     {
         auto prev = begin;
         auto curr = begin->next;
@@ -83,7 +82,7 @@ Node* connect(Node* root) {
             tag = false;
         }
         else ;
-        while (curr) // 只要同一行的next不为空
+        while (curr) // 只要同一行的next不为空，到这里可以保证该层已经是完整连接起来的链表了
         {
             // 这部分更新begin节点
             if (curr->left && tag) {
@@ -96,35 +95,24 @@ Node* connect(Node* root) {
                 tag = false;
             }
             else ;
-            // 先判断左边的右结点，右边的左结点
-            // 再判断左边的右结点，右边的右结点
-            // ...依次类推
-            if (prev->right && curr->left)
-            {
-                prev->right->next = curr->left;
-                prev = curr;    // 更新prev
-                
-            }  
-            else if (prev->right && curr->right) {
-                prev->right->next = curr->right;
-                prev = curr;    // 更新prev
-            }   
-            else if (prev->left && curr->left) {
-                prev->left->next = curr->left;
-                prev = curr;    // 更新prev
-            } 
-            else if (prev->left && curr->right) {
-                prev->left->next = curr->right;
-                prev = curr; 
+
+            // 如果prev没有左右孩子结点，更新prev结点
+            if (!prev->left && !prev->right)    prev = curr;
+
+            // 这部分else包括了左右孩子都有的情况
+            else if (prev->right) {
+                if (curr->left) prev->right->next = curr->left;
+
+                if (!curr->left && curr->right) prev->right->next = curr->right;
+                if (curr->left || curr->right) prev = curr;
             }
-            else if (!prev->left && !prev->right) {
-                prev = curr;
-            }
-            else if (!curr->left && !curr->right) {
-                ;
-            }
+            // 最后一个情况只能是只有左孩子了
             else {
-                prev = curr;
+                if (curr->left) prev->left->next = curr->left;
+
+                if (!curr->left && curr->right) prev->left->next = curr->right;
+
+                if (curr->left || curr->right) prev = curr;
             }
             curr = curr->next;
         }
