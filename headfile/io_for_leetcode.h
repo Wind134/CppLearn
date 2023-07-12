@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <limits>
+#include <sstream>
 
 class input {
 public:
@@ -40,8 +41,38 @@ public:
         return input_str;
     }
 
+    // 输入一个二维数组
+    std::vector<std::vector<int>>& input_matrix()
+    {
+        std::cout << "Please input the matrix(Enter to next row): \n";
+
+        std::string row_input;
+
+        while (std::getline(std::cin, row_input))
+        {
+            if (row_input == "q" || row_input == "Q")   break;
+            std::vector<int> row_vec;
+            std::istringstream iss(row_input);
+            int elem;
+            while (iss >> elem) row_vec.push_back(elem);
+            input_mat.emplace_back(row_vec);
+        }
+
+        if (std::cin.fail())
+        {
+            // 输入错误处理逻辑
+            std::cout << "Format wrong, invalid input, please input again!" << std::endl;
+
+            // 清空输入流
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+        return input_mat;
+    }
+
 private:
     std::vector<int> input_vec;
+    std::vector<std::vector<int>> input_mat;
     std::string input_str;
     int input_data;
 };
