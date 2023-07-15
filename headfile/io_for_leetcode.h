@@ -35,11 +35,28 @@ public:
         return input_vec;
     }
 
-    std::string& input_string()
+    // 输入字符串数组的函数
+    std::vector<std::string>& input_strVec()
     {
-        std::getline(std::cin, input_str);
-        return input_str;
+        std::cout << "Please input the array(Enter To End): ";
+        while (std::cin >> input_str)
+        {
+            str_vec.push_back(std::move(input_str));
+            if(std::cin.get() == '\n')   break;
+        }
+
+        if (std::cin.fail())
+        {
+            // 输入错误处理逻辑
+            std::cout << "Format wrong, invalid input, please input again!" << std::endl;
+
+            // 清空输入流
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+        return str_vec;
     }
+
 
     // 输入一个二维数组
     std::vector<std::vector<int>>& input_matrix()
@@ -74,6 +91,7 @@ private:
     std::vector<int> input_vec;
     std::vector<std::vector<int>> input_mat;
     std::string input_str;
+    std::vector<std::string> str_vec;
     int input_data;
 };
 
@@ -102,6 +120,25 @@ public:
     void output_matrix(const std::vector<std::vector<int>>& matrix)
     {
         for (const auto& vec : matrix)
+        {
+            for(auto& elem : vec)
+            {
+                if (is_first)
+                {
+                    std::cout << elem;
+                    is_first = false;
+                }
+                else    std::cout << " " << elem;
+            }
+            std::cout << std::endl;
+            is_first = true;
+        }
+    }
+
+    // 输出字符串数组
+    void output_str_vec(const std::vector<std::vector<std::string>>& string_vec)
+    {
+        for (const auto& vec : string_vec)
         {
             for(auto& elem : vec)
             {
