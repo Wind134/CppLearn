@@ -19,7 +19,11 @@
 
 // ....以此类推
 
-初始值s[s.size()][t.size()] = 1;    // 这个表示的就是空字符与空字符，它就是匹配的
+-- 滚动数组的选择，是选列数组还是行数组
+-- 我们观察之前动态规划的特点，逐列向左走，逐行向上走的
+-- 如果我们选择嵌套两层循环，那么第一层循环可以从后往前先不断更新一维数组的值
+-- 更新完成之后，再在前面的循环中模拟向上走的流程
+-- 因为我们选择行数组，即数组大小设置为t + 1
 */
 #include "../headfile/io_for_leetcode.h"
 using namespace std;
@@ -27,22 +31,28 @@ using namespace std;
 
 int numDistinct(string s, string t) {
     int size1 = s.size(), size2 = t.size();
-    vector<vector<int>> dp_matrix(size1 + 1, vector<int>(size2 + 1, 0));
-    for (int i = 0; i <= size1; i++) {
-        dp_matrix[i][size2] = 1;
-    }
+    if (size1 < size2)  return 0;
+
+    // 整个数组的初始值全为0，然后在后续的循环中处理
+    vector<int> dp_array(size2 + 1, 0);
+
+    // 仿照之前二维数组的步骤，我们从最后一个开始
+    // i的起始值不重要，因为最外层的循环就是为了表现次数
     for (int i = size1 - 1; i >= 0; i--)
     {
+        // 先更新数组中最后一个的值，一定是1，相当于选中子序列为空字符
+        dp_array[size2] = 1;
+        auto temp_array = dp_array; // 临时存储经过上一轮处理后的值
         for (int j = size2 - 1; j >= 0; j--)
         {
-            if (s[i] == t[j])    dp_matrix[i][j] = dp_matrix[i + 1][j] + dp_matrix[i + 1][j + 1];
-            else dp_matrix[i][j] = dp_matrix[i + 1][j];
+            if (s[i] == t[j])    dp_array[j] = temp_array[j] +  temp_array[j + 1];
+            else dp_array[j] = temp_array[j];
+            
+            // else范围省略即可
         }
     }
-    output test;
-    test.output_matrix(dp_matrix);
 
-    return dp_matrix[0][0];
+    return dp_array[0];
 }
 
 int main()
