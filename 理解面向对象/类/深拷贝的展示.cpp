@@ -1,7 +1,5 @@
 /*
-这是一个很好的例子，展示了浅拷贝所带来的问题
-- 我所采用的是默认的拷贝构造，显然默认的拷贝构造是浅拷贝；
-- 正是因为是浅拷贝，在程序结束时会出现报错；
+这是一个使用深拷贝的例子，解决了浅拷贝所带来的问题
 */
 #include <iostream>
 #include <string>
@@ -15,9 +13,10 @@ public:
         name = new std::string(n);
     }
 
-    // Person(const Person& other) {
-    //     name = new std::string(*other.name);
-    // }
+    Person(const Person& other) {
+        // 分配了一片新的空间，实现了深拷贝
+        name = new std::string(*other.name);
+    }
 
     ~Person() {
         delete name;
@@ -34,14 +33,17 @@ public:
 
 int main() {
     Person person1("Alice");
-    Person person2 = person1;  // 浅拷贝
+
+    // 对对对，还有一个细节要区分好，像下面这种写法调用的是拷贝构造函数，而不是拷贝赋值运算符，切记
+    Person person2 = person1;  // 深拷贝
+
+    // 拷贝赋值运算符应该是：
+    // Person person3;
+    // person3 = person1;       // 这样才属于拷贝赋值运算符的调用
 
     person2.setName("Bob");
 
-    std::cout << person1.getName() << std::endl;  // 输出 "Bob"，受到修改的影响
+    std::cout << person1.getName() << std::endl;  // 仍输出"Alice"，不受修改的影响
 
-    // 程序结束后，会先对person1执行析构，成功析构
-    // 但是person2的析构就会出现问题，因为person1的析构已经删除了name指针所指向的那片空间
-    // delete一个已释放的空间显然是不合法的
     return 0;
 }
