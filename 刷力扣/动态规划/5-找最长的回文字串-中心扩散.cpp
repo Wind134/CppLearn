@@ -1,42 +1,12 @@
-// 我们找字符串中所有回文串的字符
-// 更长则更新
-   /*  for (int i = 0; i < n; i++)              //这个做法有一个很大的问题就是在i=0时，需要知道i等于1、2、3等情况的状态
-    {
-        for (int j = i + 1; j < n; j++)
-        {
- 
-            if (j - i == 1)     // 考虑相邻的情况
-            {
-                if(dp[i][j])
-                {
-                    maxLen = max(maxLen, 2);
-                    if (maxLen <= 2)
-                        substring = s.substr(i, 2);
-                }
-                else
-                {
-                    maxLen = max(maxLen, 1);
-                    if (maxLen <= 1)
-                        substring = s.substr(i, 1);
-                }
-            }
-            else
-            {
-                dp[i][j] = (dp[i + 1][j - 1]&&s[i] == s[j]);      // 这边得到了递推公式
-                if (dp[i][j])
-                {
-                    maxLen = max(maxLen, j - i + 1);
-                    cout << maxLen << endl;
-                    substring = s.substr(i, maxLen);
-                }
-            }
-        }
-    } 
-    */
-//以上是有问题而废弃的思路，接下来的思路尝试使用中心扩散
-#include <iostream>
-#include <string>
-#include <vector>
+/*
+题目：
+- 给你一个字符串s，找到s中最长的回文子串。
+- 如果字符串的反序与原始字符串相同，则该字符串称为回文字符串。
+
+做法：针对每个字符串做中心扩散，方法复杂度应该不低
+- 考虑通过动态规划优化(动态规划一样复杂度不低)
+*/
+#include "../headfile/io_for_leetcode.h"
 
 using namespace std;
 
@@ -83,9 +53,44 @@ string longestPalindrome(const string &s)
 }
 int main()
 {
-    /* string s("abab");
-    bool tag = isPalindrome(s);
-    cout << tag << endl; */
-    string s = "ababa";
-    cout << longestPalindrome(s) << endl;
+    string str;
+    cin >> str;
+    cout << longestPalindrome(str) << endl;
 }
+
+
+// 我们找字符串中所有回文串的字符
+// 更长则更新
+   /*  for (int i = 0; i < n; i++)              //这个做法有一个很大的问题就是在i=0时，需要知道i等于1、2、3等情况的状态
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+ 
+            if (j - i == 1)     // 考虑相邻的情况
+            {
+                if(dp[i][j])
+                {
+                    maxLen = max(maxLen, 2);
+                    if (maxLen <= 2)
+                        substring = s.substr(i, 2);
+                }
+                else
+                {
+                    maxLen = max(maxLen, 1);
+                    if (maxLen <= 1)
+                        substring = s.substr(i, 1);
+                }
+            }
+            else
+            {
+                dp[i][j] = (dp[i + 1][j - 1]&&s[i] == s[j]);      // 这边得到了递推公式
+                if (dp[i][j])
+                {
+                    maxLen = max(maxLen, j - i + 1);
+                    cout << maxLen << endl;
+                    substring = s.substr(i, maxLen);
+                }
+            }
+        }
+    } 
+    */

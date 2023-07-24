@@ -1,9 +1,7 @@
 // 两个数组已经确定正序
 // 想办法将两个有序序列组合在一起
 
-#include <iostream>
-#include <vector>
-
+#include "../headfile/io_for_leetcode.h"
 using namespace std;
 
 
@@ -40,21 +38,9 @@ double findMedianSortedArrays(const vector<int>& nums1, const vector<int>& nums2
 
 int main()
 {
-    vector<int> vec1;
-    vector<int> vec2;
-    int c;
-    cout << "请输入vec1：\n";
-    while (cin >> c)
-    {
-        vec1.push_back(c);
-        if(cin.get() == '\n')    break;
-    }
-    cout << "请输入vec2：\n";
-    while (cin >> c)
-    {
-        vec2.push_back(c);
-        if(cin.get() == '\n')    break;
-    }
+    input input4_1, input4_2;
+    auto vec1 = input4_1.input_vector();
+    auto vec2 = input4_2.input_vector();
     double value = findMedianSortedArrays(vec1, vec2);
     cout << "中位数的值为：" << value << endl;
     return 0;

@@ -1,3 +1,7 @@
+/*
+思路：
+同样是哈希映射，但这个做法相比数组更好理解
+*/
 #include <iostream>
 #include <cmath>
 #include <unordered_set>
@@ -11,7 +15,7 @@ int lengthOfLongestSubstring(const string &s) {
         int left = 0;                               // 左端字符
         for(int i = 0; i < s.size(); i++)           // 这是起始移动的字符
         {
-            while (char_set.find(s[i]) != char_set.end())  // 如果某个值没找到
+            while (char_set.find(s[i]) != char_set.end())  // 如果某个值找到了，说明有重复，不能用了
             {
                 char_set.erase(s[left]);
                 left++;

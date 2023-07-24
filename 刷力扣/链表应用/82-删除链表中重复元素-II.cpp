@@ -1,8 +1,8 @@
-/* 发生重复的一律删除 */
-#include <iostream>
-#include <memory>
-#include <vector>
-#include "../headfile/ListNode.h"
+/*
+题目：
+- 发生重复的一律删除
+*/
+#include "../headfile/io_for_leetcode.h"
 using namespace std;
 
 
@@ -69,18 +69,10 @@ ListNode* deleteDuplicates(ListNode* head)
 
 int main()
 {
-    vector<int> input;  // 根据输入的数组创建链表
+    input input82;
+    auto vec = input82.input_vector();
 
-    int input_data;
-
-    while (cin >> input_data)
-    {
-        input.push_back(input_data);
-        if(cin.get() == '\n')   break;
-    }
-
-
-    ListNode* list_head = createList(input);
+    ListNode* list_head = createList(vec);
 
     // 测试建立是否成功
     ListNode* init_head = list_head;
@@ -95,14 +87,9 @@ int main()
 
     ListNode* result = deleteDuplicates(list_head);
 
+    outputList(result);
 
-    while(result != nullptr)
-    {
-        cout << result->val << " ";
-        result = result->next;
-    }
-
-    cout << "\nDelete Success!" << endl;
+    cout << "Delete Success!" << endl;
 
     return 0;
 

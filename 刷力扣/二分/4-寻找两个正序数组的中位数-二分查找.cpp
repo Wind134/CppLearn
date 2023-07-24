@@ -1,10 +1,16 @@
-// 两个数组已经确定正序
-// 利用中位数的特性，不断的进行二分查找
+/*
+题目：
+给定两个大小分别为m和n的正序(从小到大)数组nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
 
-#include <iostream>
-#include <vector>
-#include <math.h>
+要求算法的时间复杂度为O(log(m+n))。
 
+
+思路：
+- 通过二分去定位处于中间位置的那个元素，由于是二分，很好的控制了时间复杂度，这应该是最佳做法
+*/
+
+#include "../headfile/io_for_leetcode.h"
+#include <algorithm>
 using namespace std;
 
 
@@ -54,21 +60,9 @@ double findMedianSortedArrays(const vector<int>& nums1, const vector<int>& nums2
 
 int main()
 {
-    vector<int> vec1;
-    vector<int> vec2;
-    int c;
-    cout << "请输入vec1：\n";
-    while (cin >> c)
-    {
-        vec1.push_back(c);
-        if(cin.get() == '\n')    break;
-    }
-    cout << "请输入vec2：\n";
-    while (cin >> c)
-    {
-        vec2.push_back(c);
-        if(cin.get() == '\n')    break;
-    }
+    input input4_1, input4_2;
+    auto vec1 = input4_1.input_vector();
+    auto vec2 = input4_2.input_vector();
     double value = findMedianSortedArrays(vec1, vec2);
     cout << "中位数的值为：" << value << endl;
     return 0;

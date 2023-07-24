@@ -5,10 +5,7 @@
 
 * k的值理解为：我后面要返回的头结点就是倒数第k个节点
 */
-#include <iostream>
-#include <memory>
-#include <vector>
-#include "../headfile/ListNode.h"
+#include "../headfile//io_for_leetcode.h"
 using namespace std;
 
 
@@ -52,43 +49,21 @@ ListNode* rotateRight(ListNode* head, int k)
 
 int main()
 {
-    vector<int> input;  // 根据输入的数组创建链表
-
-    int input_data;
-
-    while (cin >> input_data)
-    {
-        input.push_back(input_data);
-        if(cin.get() == '\n')   break;
-    }
+    input input61;
+    auto vec = input61.input_vector();
 
     cout << "Please input k value: ";
     int k;
 
     cin >> k;
 
-    ListNode* list_head = createList(input);
-
-    // 测试建立是否成功
-    ListNode* init_head = list_head;
-
-    while(init_head != nullptr)
-    {
-        cout << init_head->val << " ";
-        init_head = init_head->next;
-    }
-
-    cout << "\nSuccess Established!" << endl;
+    ListNode* list_head = createList(vec);
 
     ListNode* result = rotateRight(list_head, k);
 
-    while(result != nullptr)
-    {
-        cout << result->val << " ";
-        result = result->next;
-    }
+    outputList(result);
 
-    cout << "\nRotate Success!" << endl;
+    cout << "Rotate Success!" << endl;
 
     return 0;
 
