@@ -1,10 +1,12 @@
-/* 给你一个整数数组nums ，判断是否存在三元组[nums[a], nums[b], nums[c], nums[d]]
-满足a、b、c、d互互不相同的条件 ，同时还满足 nums[a] + nums[b] + nums[b] + nums[d] == 0 
-输出所有符合条件且不重复的四元组
-思路：第一反应是采用多指针法
+/*
+题目：
+- 给你一个整数数组nums，判断是否存在三元组[nums[a], nums[b], nums[c], nums[d]]
+- 满足a、b、c、d互不相同的条件，同时还满足 nums[a] + nums[b] + nums[b] + nums[d] == 0 
+- 输出所有符合条件且不重复的四元组
+
+思路：第一反应是采用多指针法(这样做的局限性在于，如果是5个6个....呢)
 */
-#include <iostream>
-#include <vector>
+#include "../headfile/io_for_leetcode.h"
 #include <algorithm>
 using namespace std;
 
@@ -58,21 +60,15 @@ vector<vector<int>> fourSum(vector<int>& nums, const int& target)
 
 int main()
 {
-    vector<int> nums;
-    int num, target;
-    while (cin >> num)
-    {
-        nums.push_back(num);
-        if (cin.get() == '\n')  break;  
-    }
+    input input18;
+    auto vec = input18.input_vector();
+    int target;
+    cout << "Input the target: ";
     cin >> target;
 
-    vector<vector<int>> threeSumarray = fourSum(nums, target);
-    for (const vector<int>& i : threeSumarray)
-    {
-        for(const int& data : i)   cout << data << " ";
-        cout << "\n";
-    }
+    auto threeSumarray = fourSum(vec, target);
+    output output18;
+    output18.output_matrix(threeSumarray);
     return 0;
 }
 

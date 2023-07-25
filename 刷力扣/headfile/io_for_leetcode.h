@@ -7,8 +7,11 @@
 #include <vector>
 #include <string>
 #include <limits>
+#include <climits>
 #include <sstream>
-#include "./ListNode.h"
+#include "ListNode.h"
+#include "TreeNode.h"
+
 
 class input {
 public:
@@ -137,9 +140,25 @@ public:
     }
 
     // 输出字符串数组
-    void output_str_vec(const std::vector<std::vector<std::string>>& string_vec)
+    void output_str_vec(const std::vector<std::string>& string_vec) {
+        for (const auto& str : string_vec)
+        {
+            if (is_first)
+            {
+                std::cout << str;
+                is_first = false;
+            }
+            else    std::cout << " " << str;
+        }
+        is_first = true;
+
+        std::cout << std::endl;
+    }
+
+    // 输出字符串矩阵
+    void output_str_matrix(const std::vector<std::vector<std::string>>& string_matrix)
     {
-        for (const auto& vec : string_vec)
+        for (const auto& vec : string_matrix)
         {
             for(auto& elem : vec)
             {

@@ -1,20 +1,11 @@
 #include <iostream>
 #include <string>
-#include <map>
+#include <unordered_map>
 using namespace std;
 
 // 在使用map这部分内容时有些卡壳了...
-map<char, int> romanMap{{'I', 1}, {'V', 5}, {'X', 10},
+unordered_map<char, int> romanMap{{'I', 1}, {'V', 5}, {'X', 10},
                 {'L', 50}, {'C', 100}, {'D', 500}, {'M', 1000}};
-
-int romanToInt(const string&);
-
-int main()
-{
-    string input;
-    cin >> input;
-    cout << romanToInt(input) << endl;
-}
 
 int romanToInt(const string& s)
 {
@@ -58,3 +49,11 @@ int romanToInt(const string& s)
     }
     return result;
 }
+
+int main()
+{
+    string input;
+    cin >> input;
+    cout << romanToInt(input) << endl;
+}
+

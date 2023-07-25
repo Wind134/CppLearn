@@ -1,18 +1,19 @@
-/* N字形输入的字符串，需要从左往右逐行读取输出一个新的字符串 */
+/*
+题目：
+- 将一个给定字符串s根据给定的行数numRows，以从上往下、从左到右进行Z字形排列。
+- 比如输入字符串为"PAYPALISHIRING"，行数为3时，排列如下：
+- P   A   H   N
+- A P L S I I G
+- Y   I   R
+- 之后，你的输出需要从左往右逐行读取，产生出一个新的字符串，比如："PAHNAPLSIIGYIR"。
+
+
+思路：
+- 按照输入矩阵的顺序遍历即可，其中有很明显的规律，一个脑筋急转弯的题目
+*/
 #include <iostream>
 #include <string>
 using namespace std;
-
-
-string convert(const string&, const int&);
-
-int main()
-{
-    string s;
-    int numRows;
-    cin >> s >> numRows;
-    cout << '"' << convert(s, numRows) << '"'<< endl;
-}
 
 string convert(const string& s, const int& numRows)
 {
@@ -33,3 +34,12 @@ string convert(const string& s, const int& numRows)
     }
     return result;
 }
+
+int main()
+{
+    string s;
+    int numRows;
+    cin >> s >> numRows;
+    cout << '"' << convert(s, numRows) << '"'<< endl;
+}
+

@@ -1,4 +1,10 @@
-/* 给一个整数，转化为罗马数字 */
+/*
+题目：
+- 给一个整数，转化为罗马数字
+
+
+思路：递归加枚举解决问题，但貌似多了很多重复运算，因此这个方式改进一下
+*/
 #include <iostream>
 #include <string>
 using namespace std;

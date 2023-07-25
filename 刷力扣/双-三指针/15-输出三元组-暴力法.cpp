@@ -1,34 +1,16 @@
-/* 给你一个整数数组nums ，判断是否存在三元组[nums[i], nums[j], nums[k]]
-满足i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 
-输出所有符合条件且不重复的三元组
-思路：第一反应是采用三指针法，默认采用的暴力法复杂度达到了N^3数量级
+/*
+题目：
+- 给你一个整数数组nums ，判断是否存在三元组[nums[i], nums[j], nums[k]]
+- 满足i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 
+- 输出所有符合条件且不重复的三元组
+
+思路：
+- 第一反应是采用三指针法，默认采用的暴力法复杂度达到了N^3数量级
+- 暴力做法没什么可聊的
 */
-#include <iostream>
-#include <vector>
+#include "../headfile/io_for_leetcode.h"
 #include <algorithm>
 using namespace std;
-
-vector<vector<int>> threeSum(vector<int>&);
-
-int main()
-{
-    vector<int> nums;
-    int num;
-    while (cin >> num)
-    {
-        nums.push_back(num);  
-    }
-
-
-    vector<vector<int>> threeSumarray = threeSum(nums);
-    for (const vector<int>& i : threeSumarray)
-    {
-        for(const int& data : i)   cout << data << " ";
-        cout << "\n";
-    }
-    return 0;
-}
-
 
 vector<vector<int>> threeSum(vector<int>& nums) 
 {
@@ -61,3 +43,16 @@ vector<vector<int>> threeSum(vector<int>& nums)
     }
     return result;
 }
+
+int main()
+{
+    input input15;
+    auto vec = input15.input_vector();
+
+    vector<vector<int>> threeSumarray = threeSum(vec);
+    output output15;
+    output15.output_matrix(threeSumarray);
+    return 0;
+}
+
+
