@@ -42,7 +42,7 @@ public:
     // 输入字符串数组的函数
     std::vector<std::string>& input_strVec()
     {
-        std::cout << "Please input the array(Enter To End): ";
+        std::cout << "Please input the str array(Enter To End): ";
         while (std::cin >> input_str)
         {
             str_vec.push_back(std::move(input_str));
