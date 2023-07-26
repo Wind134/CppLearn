@@ -1,10 +1,5 @@
 /* 
-* 给定一个字符串s和一个字符串数组words。words中所有字符串长度相同。
-* s中的串联子串是指一个包含words中所有字符串以任意顺序排列连接起来的子串。
-* 例如，如果words = ["ab","cd","ef"]，那么"abcdef"，"abefcd"，"cdabef"，"cdefab"，"efabcd"，和 "efcdab"都是串联子串。
-* "acdbef"不是串联子串，因为他不是任何words排列的连接。
-
-* 返回所有串联字串在s中的开始索引。可以以任意顺序返回答案。
+留作记录，没太大参考价值
 */
 
 #include <iostream>
