@@ -19,7 +19,7 @@ using namespace std;
 int longestValidParentheses(string s) 
 {
     if (s.size() == 0)  return 0;
-    stack<int> braceIndex;      // 仅存储左括号的栈
+    stack<int> braceIndex;      // 仅存储左括号索引的栈
 
     braceIndex.push(-1);
 

@@ -1,12 +1,13 @@
-/* 
- * 请你判断一个 9 x 9 的数独是否有效。只需要根据以下规则，验证已经填入的数字是否有效即可。
- * 数字1-9在每一行只能出现一次。
- * 数字1-9在每一列只能出现一次。
- * 数字1-9在每一个以粗实线分隔的3x3宫内只能出现一次。
- * 思路：借助一个外标记数组是否可行？
- * 具体思路：借助三个外标记数组，二维行数组记录每一行每个数字出现的次数
- * 二维列数组记录每一列数组的每个数字出现的次数
- * 三维数组记录每一个小九宫格每个数字出现的次数
+/*
+题目：
+- 请你判断一个 9 x 9 的数独是否有效。只需要根据以下规则，验证已经填入的数字是否有效即可。
+- 数字1-9在每一行只能出现一次。
+- 数字1-9在每一列只能出现一次。
+- 数字1-9在每一个以粗实线分隔的3x3宫内只能出现一次。
+- 思路：借助一个外标记数组是否可行？
+- 具体思路：借助三个外标记数组，二维行数组记录每一行每个数字出现的次数
+- 二维列数组记录每一列数组的每个数字出现的次数
+- 三维数组记录每一个小九宫格每个数字出现的次数(唯一用到过三维数组的一次)
 */
 #include <iostream>
 #include <vector>
@@ -18,7 +19,7 @@ bool isValidSudoku(vector<vector<char>>& board)
 {
     int rows[9][9];
     int cols[9][9];
-    int subboxes[3][3][9];
+    int subboxes[3][3][9];  // 三个三行9列的矩阵
 
     memset(rows, 0, sizeof(rows));
     memset(cols, 0, sizeof(cols));
@@ -31,8 +32,8 @@ bool isValidSudoku(vector<vector<char>>& board)
             if (board[i][j] != '.')
             {
                 int index = board[i][j] - '0' - 1;
-                rows[i][index] ++;
-                cols[j][index] ++;
+                rows[i][index]++;
+                cols[j][index]++;
                 subboxes[i / 3][j / 3][index]++;
                 if (rows[i][index] > 1 || cols[j][index] > 1 || subboxes[i / 3][j / 3][index] > 1) 
                     return false;
