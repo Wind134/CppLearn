@@ -12,29 +12,26 @@
 - 针对这么一个限制条件，我们设计一个函数去检测即可
 - 什么时候返回我们的结果呢，当处理到矩阵的最后一行时，返回我们符合条件的结果
 */
-
-#include <iostream>
-#include <string>
-#include <vector>
+#include "../headfile/io_for_leetcode.h"
 using namespace std;
 
 vector<vector<string>> result;
 
-// 由于我们是从上行往下添加的，因为我们只需要关注上行的情况即可
+// 由于我们是从上行往下添加的，因为我们只需要关注上行的情况即可，这里也可以看出来，check函数得与回溯搭配使用
 bool check(const vector<string>& matrix, int i, int j)
 {
     int size = matrix.size();
 
-    // 两个for循环判断同一行
+    // 判断同一行的左半部分(显然右半部分不用管)，因为判断顺序是从左到右
     for(int k = 0; k < j; k++)  if(matrix[i][k] == 'Q')  return false;
-    for(int k = j + 1; k < size; k++)  if(matrix[i][k] == 'Q')  return false;
 
-    // 判断同一列
+    // 判断同列的上半部分(下半部分显然先不用管)，因为判断顺序是从上到下
     for(int k = 0; k < i; k++)  if(matrix[k][j] == 'Q') return false;
 
-    // 判断左对角
+    // 这是一个辅助变量，用来判断对角部分
     int step = 1;
 
+    // 判断左对角
     while(i - step >= 0 && j - step >= 0)
     {
         if (matrix[i - step][j - step] == 'Q')    return false;
@@ -44,7 +41,7 @@ bool check(const vector<string>& matrix, int i, int j)
     // 判断右对角
     step = 1;
 
-    while(i - step >= 0 && j + step <= size)
+    while(i - step >= 0 && j + step < size)
     {
         if (matrix[i - step][j + step] == 'Q')    return false;
         step++;
@@ -63,22 +60,21 @@ void backtrace(vector<string>& matrix, int i)
             count = 1;
             matrix[i][j] = 'Q';
             // cout << "进入了判断语句: "<< matrix[i] << endl;
-            if (i + 1 == matrix.size())
+            if (i + 1 == matrix.size()) // 结束了，加入结果集
             {
                 result.push_back(matrix);
             } 
-            else backtrace(matrix, i + 1);
-            matrix[i][j] = '.'; // 恢复原状，判断下一个(非下一行)
+            else backtrace(matrix, i + 1);  // 否则处理下一行
+            matrix[i][j] = '.'; // 恢复原状，判断右边那个，在判断以前，左边先归原位
         }
     }
-    if (count == 0 || i == matrix.size()) return;
-    
+    if (count == 0 || i == matrix.size()) return;   // 遇到不通过的或者判断完最后一行仍然不满足条件的，直接返回
 }
 
 
 vector<vector<string>> solveNQueens(int n)
 {
-    auto char_matrix = vector<string> (n, string(n, '.'));   // 全初始化为'.'
+    auto char_matrix = vector<string> (n, string(n, '.'));   // 全初始化为'.'，在合理，合规的地方改成Q
     backtrace(char_matrix, 0);
     return result;
 }
@@ -88,9 +84,9 @@ int main()
     int n;
     cin >> n;
 
-    auto output = solveNQueens(n);
+    auto output_res = solveNQueens(n);
 
-    for (const auto& elem : output)
+    for (const auto& elem : output_res)     // 特殊情况的IO处理就不调库了
     {
         for (auto& elem_elem : elem)    cout << elem_elem << endl;
 
