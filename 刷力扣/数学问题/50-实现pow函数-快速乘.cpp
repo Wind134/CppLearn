@@ -1,9 +1,14 @@
-/* 这里手动实现一个pow算法，主要原理是利用快速乘机制实现 */
-#include <iostream>
-#include <cmath>
+/*
+题目：
+- 手动实现一个pow算法，主要原理是利用快速乘机制实现
+
+思路：
+- 本质上就是递归
+*/
+#include "../headfile/io_for_leetcode.h"
 using namespace std;
 
-const int& MinV = -pow(2, 31);
+int MinV = INT_MIN;
 
 double myPow(double x, int n)
 {
