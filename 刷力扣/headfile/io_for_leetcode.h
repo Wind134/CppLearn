@@ -65,7 +65,7 @@ public:
     // 输入一个二维数组
     std::vector<std::vector<int>>& input_matrix()
     {
-        std::cout << "Please input the matrix(Enter to next row): \n";
+        std::cout << "Please input the matrix(Enter to next row, and 'q' to end): \n";
 
         std::string row_input;
 
