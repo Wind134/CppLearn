@@ -10,137 +10,109 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// 定义一个树的节点
-typedef struct maxHeap
-{
-    int data;
-    struct maxHeap* left;
-    struct maxHeap* right;
-} heap;
+// 定义大根堆结构
+typedef struct {
+    int* heapArray;   // 存储堆元素的数组
+    int capacity;     // 堆的容量
+    int size;         // 堆中元素的数量
+} MaxHeap;
 
-void swap(int* a, int* b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+// 创建一个新的大根堆
+MaxHeap* createMaxHeap(int capacity) {
+    MaxHeap* heap = (MaxHeap*)malloc(sizeof(MaxHeap));
+    heap->heapArray = (int*)malloc(capacity * sizeof(int));
+    heap->capacity = capacity;
+    heap->size = 0;
+    return heap;
 }
 
-// 建立大根堆的算法
-heap* buildMaxheap(int array[], int length, int index) {
-    if (index >= length)    return NULL;
+// 交换数组中两个元素的位置
+void swap(int* array, int i, int j) {
+    int temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+}
 
-    heap* root = (heap*)malloc(sizeof(heap));
-
-    root->data = array[index];
-    // heap_array[index] = root;
-        
-    int left = 2 * index + 1, right = 2 * index + 2;
-    root->left = buildMaxheap(array, length, left);
-    // heap_array[left] = root->left;
-    root->right = buildMaxheap(array, length, right);
-    // heap_array[right] = root->right;
-    if (root->left && root->left->data > root->data)  {
-        swap(&(root->left->data), &(root->data));
-        swap(&(array[index]), &(array[left]));
-        // swap(&(heap_array[left]->data), &(heap_array[index]->data));
+// 向大根堆中插入一个元素
+void insert(MaxHeap* heap, int value) {
+    if (heap->size == heap->capacity) {
+        printf("Heap is full. Cannot insert more elements.\n");
+        return;
     }
-    if (root->right && root->right->data > root->data)  {
-        swap(&(root->right->data), &(root->data));
-        swap(&(array[index]), &(array[right]));
-        // swap(&(heap_array[right]->data), &(heap_array[index]->data));
+    heap->size++;
+    int i = heap->size - 1;
+    heap->heapArray[i] = value;
+
+    // 调整堆，使其满足大根堆的性质
+    while (i != 0 && heap->heapArray[(i - 1) / 2] < heap->heapArray[i]) {
+        swap(heap->heapArray, i, (i - 1) / 2);
+        i = (i - 1) / 2;
+    }
+}
+
+// 从大根堆中删除堆顶元素
+int deleteMax(MaxHeap* heap) {
+    if (heap->size == 0) {
+        printf("Heap is empty. Cannot delete any element.\n");
+        return -1;
+    }
+    if (heap->size == 1) {
+        heap->size--;
+        return heap->heapArray[0];
+    }
+
+    int root = heap->heapArray[0];
+    heap->heapArray[0] = heap->heapArray[heap->size - 1];
+    heap->size--;
+
+    // 调整堆，使其满足大根堆的性质
+    int i = 0;
+    while (1) {
+        int max = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+
+        if (left < heap->size && heap->heapArray[left] > heap->heapArray[max])
+            max = left;
+
+        if (right < heap->size && heap->heapArray[right] > heap->heapArray[max])
+            max = right;
+
+        if (max != i) {
+            swap(heap->heapArray, i, max);
+            i = max;
+        } else {
+            break;
+        }
     }
 
     return root;
 }
 
-// 插入一个大根堆的算法，假设已经存在一个大根堆，我插入一个元素，插入之后仍然是一个大根堆
-// 首先应该是先将元素放入末尾，是否需要数组的长度信息，不然不好遍历
-// 基于层次遍历找到第一个叶节点(除了层次遍历是否还有更可靠的办法)
-// 可以在建立大根堆的时候维护一个数组，数组内的元素即为指向heap节点的指针
-// 但是这样就只能保证插入一次，还不算一个优秀的算法
-// 引入队列或许好不少
-heap* insertElem(int elem, heap* heap_array[]) {
-    // if (!root) {    // 为空的情况
-    //     root->data = elem;
-    //     root->left = NULL;
-    //     root->right = NULL;
-    //     return;
-    // }
-
-    heap* new_node = (heap*)malloc(sizeof(heap));
-    new_node->data = elem;
-    new_node->left = NULL;
-    new_node->right = NULL;
-
-
-    int begin = 0;
-    while (heap_array[2 * begin + 1] && heap_array[2 * begin + 2]) {
-        begin++;
+// 打印大根堆中的元素
+void printMaxHeap(MaxHeap* heap) {
+    printf("Max Heap: ");
+    for (int i = 0; i < heap->size; i++) {
+        printf("%d ", heap->heapArray[i]);
     }
-
-    if (!heap_array[2 * begin + 1]) heap_array[begin]->left = new_node;
-    else    heap_array[begin]->right = new_node;
-
-    if (heap_array[begin]->data >= new_node->data) return heap_array[0];
-
-    else {  // 否则就要一层一层向上了
-        swap(&(heap_array[begin]->data), &(new_node->data));
-        begin = begin / 2;
-        while (begin > 0 || heap_array[begin / 2]->data < heap_array[begin]->data) {
-            swap(&(heap_array[begin]->data), &(heap_array[begin / 2]->data));
-            begin /= 2;
-        }
-        return heap_array[0];
-    }
-}
-
-void preOrder(heap* root) {
-    if (!root)  return;
-
-    printf("%d ", root->data);
-
-    preOrder(root->left);
-    preOrder(root->right);
-}
-
-
-void inOrder(heap* root) {
-    if (!root)  return;
-    inOrder(root->left);
-
-    printf("%d ", root->data);
-
-
-    inOrder(root->right);
-}
-
-
-int main()
-{
-    int len;
-    int* array; // 存储数组元素的首地址
-    printf("Please input the length of array: ");
-    scanf("%d", &len);
-    heap* heap_array[len];
-
-    array = (int *)malloc(len * sizeof(int));
-
-    if (!array) {
-        printf("Allocation failed!\n");
-        return -1;
-    }
-
-    for (int i = 0; i < len; i++)
-    {
-        scanf("%d", &array[i]);
-    }
-
-    heap* root = buildMaxheap(array, len, 0);
-
-    preOrder(root);
-
     printf("\n");
+}
 
-    inOrder(root);
-    
+int main() {
+    MaxHeap* heap = createMaxHeap(10);  // 创建一个大小为10的大根堆
+
+    insert(heap, 5);    // 依次插入以下各个元素，由于预先定义的大小为10，因此堆中的元素数量不能超过这个数
+    insert(heap, 3);
+    insert(heap, 8);
+    insert(heap, 1);
+    insert(heap, 10);
+
+    printMaxHeap(heap);
+
+    int max = deleteMax(heap);
+    printf("Deleted Max Element: %d\n", max);
+
+    printMaxHeap(heap);
+
     return 0;
 }
