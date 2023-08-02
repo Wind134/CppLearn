@@ -1,15 +1,12 @@
-/* 
-* 一个机器人位于一个m x n网格的左上角
+/*
+题目：
+- 一个机器人位于一个m x n网格的左上角，机器人每次只能向下或者向右移动一步，机器人试图达到网格的右下角。
+- 现在考虑网格中有障碍物。那么从左上角到右下角将会有多少条不同的路径？
+- 注意：网格中的障碍物和空位置分别用1和0来表示。
 
-* 机器人每次只能向下或者向右移动一步，机器人试图达到网格的右下角。
-
-* 现在考虑网格中有障碍物。那么从左上角到右下角将会有多少条不同的路径？
-
-* 网格中的障碍物和空位置分别用1和0来表示。
+思路：动态规划，延续上题的做法，只是这次需要考虑障碍物的存在；
 */
-#include <iostream>
-#include <vector>
-#include <sstream>
+#include "../headfile/io_for_leetcode.h"
 using namespace std;
 
 int uniquePathsWithObstacles(const vector<vector<int>>& obstacleGrid) 
@@ -18,6 +15,8 @@ int uniquePathsWithObstacles(const vector<vector<int>>& obstacleGrid)
     int row = temp_matrix.size();
     int col = temp_matrix[0].size();
     if (temp_matrix[0][0] == 1 || temp_matrix[row - 1][col - 1] == 1)   return 0;
+
+    // 获取动态规划矩阵第一行的数值信息
     for (int i = 0; i < col; i++)
     {
         if (temp_matrix[0][i] != 1) temp_matrix[0][i] = 1;
@@ -28,6 +27,7 @@ int uniquePathsWithObstacles(const vector<vector<int>>& obstacleGrid)
         }
     }
 
+    // 获取动态规划矩阵第一列的数值信息
     for (int i = 1; i < row; i++)
     {
         if (temp_matrix[i][0] != 1) temp_matrix[i][0] = 1;
@@ -56,33 +56,10 @@ int uniquePathsWithObstacles(const vector<vector<int>>& obstacleGrid)
 
 int main()
 {
-    int m, n;
+    input input63;
 
-    cout << "Please input the m & n: ";
-    cin >> m >> n;
+    auto input_matrix = input63.input_matrix();
 
-    cin.get();
-    string line;
-
-    int input_data;
-
-    vector<vector<int>> input;
-
-    while (m != 0 && getline(cin, line))
-    {
-        istringstream iss(line);    // istringstream对象可以提取输入行中的相应类型
-        
-        vector<int> vec_of_input;
-        
-        while (iss >> input_data)
-        {
-            vec_of_input.push_back(input_data);
-        }
-
-        input.push_back(vec_of_input);
-        m--;   
-    }
-
-    cout << uniquePathsWithObstacles(input) << endl;
+    cout << uniquePathsWithObstacles(input_matrix) << endl;
     
 }

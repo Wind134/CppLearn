@@ -1,10 +1,15 @@
 /*
-* 给你两个二进制字符串a和b，以二进制字符串的形式返回它们的和。
+题目：
+- 给你两个二进制字符串a和b，以二进制字符串的形式返回它们的和。
+-注意：二进制的本质就是满2进位
 
-* 二进制的本质就是满2进位
+思路：
+- 代码不够优雅，要优雅；
+- 下面这个写法已经很不错了，但同时还是可以考虑位运算；
 */
 #include <iostream>
 #include <string>
+#include <algorithm>
 using namespace std;
 
 string addBinary(string a, string b)
