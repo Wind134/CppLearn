@@ -17,8 +17,8 @@
     -- word1开始到第i - 1个位置，已经匹配到word2开始到第j - 1个位置((dp_matrix[i - 1][j - 1]))，这种情况，替换word1[i]这个位置的元素为word[j]即可
     -- word1开始到第i个位置，已经匹配到word2开始到第j - 1个位置((dp_matrix[i][j - 1]))，这种情况，在word1[i]这个位置后插入相应元素即可
     -- 显然，通过这个递推式，可以看出，初始值需要特殊处理
-    -- dp_matrix的第一行，代表word的-1(虚拟)位置，到word[j]个位置，这个值显然，dp_matrix[0][j] = j，word1不断插入;
-    -- dp_matrix的第一列，代表word的-1(虚拟)位置，到这个位置，那么dp_matrix[i][0] = i，word1不断删除;
+    -- dp_matrix的第一行，word1字符为空，空字符，到word[j]个位置，这个值显然，dp_matrix[0][j] = j，word1不断插入;
+    -- dp_matrix的第一列，word1开始(0)到第i个位置转化到空字符所需的最小次数，那么dp_matrix[i][0] = i，word1不断删除;
 
 */
 #include "../headfile/io_for_leetcode.h"

@@ -7,6 +7,7 @@
 思路：随机给定一个值，我们尽可能缩小要搜寻的范围
 - 要是小于matrix[0][0]或者大于matrix[m - 1][n - 1]，直接返回false
 - 接下来，找到这个数最先可能存在的行，以及最后可能存在的行
+- 这个思想有点类似，退化寻找，先找行列
 */
 #include "../headfile/io_for_leetcode.h"
 using namespace std;
