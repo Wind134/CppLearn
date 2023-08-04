@@ -1,18 +1,21 @@
 /*
-* 给你一个链表的头节点head，旋转链表，将链表每个节点向右移动k个位置。
-* 思路还是很简单的：想办法让整个链表成环，然后输出之时更新头结点的位置
-* 我们可以让链表成环的过程中，获取到要成为新的头结点的那个节点.
+题目：
+- 给你一个链表的头节点head，旋转链表，将链表每个节点向右移动k个位置。
 
-* k的值理解为：我后面要返回的头结点就是倒数第k个节点
+思路：
+思路还是很简单的：想办法让整个链表成环，然后输出之时更新头结点的位置
+- 我们可以让链表成环的过程中，获取到要成为新的头结点的那个节点.
+
+- k的值理解为：我后面要返回的头结点就是倒数第k个节点
+- 其次，也不需要创建循环单链表，有点像找倒数第k个结点的意思，像19题
 */
-#include "../headfile//io_for_leetcode.h"
+#include "../headfile/io_for_leetcode.h"
 using namespace std;
 
 
 ListNode* rotateRight(ListNode* head, int k)
 {
     if (head == nullptr)    return nullptr;
-    if (k == 0) return head;
     // 给传入的链表尾部添加一个指向头结点的指针，同时，在这个过程中，记录下
 
     int count = 1;  // 获取结点数量
@@ -62,8 +65,6 @@ int main()
     ListNode* result = rotateRight(list_head, k);
 
     outputList(result);
-
-    cout << "Rotate Success!" << endl;
 
     return 0;
 

@@ -24,12 +24,9 @@ ListNode* mergeKLists(vector<ListNode*>& lists)
     }
     // 搞定头节点
     ListNode* head = lists[minIndex];
-    ListNode* pointNode = new ListNode();
-    pointNode->next = head;
 
     lists[minIndex] = lists[minIndex]->next;
-    pointNode->next->next = mergeKLists(lists);
-    pointNode->next = pointNode->next->next;
+    head->next = mergeKLists(lists);
 
     return head;
 }

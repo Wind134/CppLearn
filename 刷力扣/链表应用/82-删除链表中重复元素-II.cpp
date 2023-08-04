@@ -1,6 +1,11 @@
 /*
 题目：
-- 发生重复的一律删除
+- 发生重复的一律删除。
+
+思路：
+- 我们设定一个临时变量，用于保存结点值，该值的初始值为第一个结点的值，然后不断去遍历；
+- 遍历结点，如果结点的值与临时变量保存的值相同，那么就需要删除该结点了；
+- 如果下一个不同，则更新临时变量的值，直到遍历结束；
 */
 #include "../headfile/io_for_leetcode.h"
 using namespace std;
@@ -9,62 +14,32 @@ using namespace std;
 ListNode* deleteDuplicates(ListNode* head) 
 {
     if (head == nullptr || head->next == nullptr)   return head;
-    ListNode* left = head;
-    ListNode* right = head;     // right是一个配合前驱的节点
-    ListNode* left_prev = nullptr;
+    ListNode* prev = new ListNode(0, head); // 指向head
+    ListNode* curr = prev;  // 移动的指针
 
-    while(right != nullptr)
+    int val = head->val;
+
+    while(curr->next && curr->next->next)   // 循环时要保证至少有两个结点
     {
-        if (right->next != nullptr && right->val == right->next->val)
+        if (curr->next->val == curr->next->next->val)
         {
-            right = right->next;
+            int x = curr->next->val;
+            while (curr->next && curr->next->val == x) {
+                auto temp_node = curr->next->next;  // 临时保存要删除的结点的下一个结点
+                delete curr->next;
+                curr->next = temp_node;
+            }
         }
-        else
+        else    // 要么到了最后一个结点，要么到了最后一个与left相同的元素的结点
         {
-            if (left != right && left->val == right->val)  // 需要进行节点的删除处理
-            {
-                if (head->val == head->next->val)   // 处理头结点的特殊情况
-                {
-                    ListNode* temp1 = head;
-                    ListNode* temp2 = right->next;
-                    if (temp2 == nullptr)   return nullptr;
-
-                    while (temp1 != temp2)
-                    {
-                        ListNode* to_delete = temp1->next;
-                        delete(temp1);
-                        temp1 = to_delete;
-                    }
-                    head = temp2;            // 更新头结点
-                    right = temp2;
-                    left = right;
-                }
-                else
-                {
-                    ListNode* temp1 = left;
-                    ListNode* temp2 = right->next;
-
-                    while (temp1 != temp2)
-                    {
-                        ListNode* to_delete = temp1->next;
-                        delete(temp1);
-                        temp1 = to_delete;
-                    }
-                    left_prev->next = temp2;
-                    right = temp2;
-                    left = right;
-                }
-            }
-            else
-            {
-                left_prev = left;
-                right = right->next;
-                left = right;
-            }
+            curr = curr->next;
         }
     }
 
-    return head;
+    auto new_head = prev->next;
+    delete prev;
+
+    return new_head;
 }
 
 int main()
@@ -74,22 +49,9 @@ int main()
 
     ListNode* list_head = createList(vec);
 
-    // 测试建立是否成功
-    ListNode* init_head = list_head;
-
-    while(init_head != nullptr)
-    {
-        cout << init_head->val << " ";
-        init_head = init_head->next;
-    }
-
-    cout << "\nSuccess Established!" << endl;
-
     ListNode* result = deleteDuplicates(list_head);
 
     outputList(result);
-
-    cout << "Delete Success!" << endl;
 
     return 0;
 

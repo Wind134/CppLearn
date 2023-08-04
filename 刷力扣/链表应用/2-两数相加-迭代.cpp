@@ -10,7 +10,6 @@
 - 基于原链表的写法，需要考虑长度问题，直接新建链表吧，这样也可以不破坏原链表的结构
 */
 #include "../headfile/io_for_leetcode.h"
-#include "../headfile/ListNode.h"   // 这个头文件都放进去了io_for_leetcode.h，不必再包含一次(由于设计了防止重定义，包含了也没事)
 using namespace std;
 
 

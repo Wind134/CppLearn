@@ -1,15 +1,18 @@
-/* 
-* 给你一个头结点为head的单链表和一个整数k，请你设计一个算法将链表分隔为k个连续的部分。
+/*
+题目：
+- 给你一个头结点为head的单链表和一个整数k，请你设计一个算法将链表分隔为k个连续的部分。
+- 每部分的长度应该尽可能的相等：任意两部分的长度差距不能超过1。这可能会导致有些部分为null。
+- 这k个部分应该按照在链表中出现的顺序排列，并且排在前面的部分的长度应该大于或等于排在后面的长度。
+- 即要求长度是非递增序列。
+- 返回一个由上述k部分组成的链表结点数组。
 
-* 每部分的长度应该尽可能的相等：任意两部分的长度差距不能超过1。这可能会导致有些部分为null。
+思路：
+- 获取链表长度，查看k可以分成几等分
+- 确定好每一个链表中链表的长
+- 最后进行分配即可
 
-* 这k个部分应该按照在链表中出现的顺序排列，并且排在前面的部分的长度应该大于或等于排在后面的长度。
-
-* 返回一个由上述k部分组成的数组。
 */
-#include <iostream>
-#include <vector>
-#include "../headfile/ListNode.h"
+#include "../headfile/io_for_leetcode.h"
 using namespace std;
 
 
@@ -44,14 +47,13 @@ vector<ListNode*> splitListToParts(ListNode* head, int k)
             list_len[i] = split_list_len + 1;
             extre_len--;
         }
-        else list_len[i] = split_list_len;   // 如果整除，则可以均分
+        else list_len[i] = split_list_len;   // 如果整除，或者余数分完了，则接下来可以均分
     }
 
 
     // 经过上面的处理我们得到了一个子链表长度结点数组，比如[1, 1, 1, 0, 0], [4, 3, 3]
     // 接下来一次将这些子链表的头结点加入数组，后面有用，再用之前定义的
-    ListNode* move_ptr = new ListNode();
-    move_ptr->next = head;
+    ListNode* move_ptr = new ListNode(0, head);
 
 
     for (int i = 0; i < k; i++)
@@ -81,35 +83,19 @@ vector<ListNode*> splitListToParts(ListNode* head, int k)
 
 int main()
 {
-    vector<int> input;  // 根据输入的数组创建链表
-
-    int input_data;
-
-    while (cin >> input_data)
-    {
-        input.push_back(input_data);
-        if(cin.get() == '\n')   break;
-    }
+    input input725;
+    auto input_vec = input725.input_vector();
 
     cout << "Please input k value: ";
     int k;
 
     cin >> k;
 
-    ListNode* list_head = createList(input); // 不带指向头结点的指针
+    ListNode* list_head = createList(input_vec); // 不带指向头结点的指针
 
     auto result = splitListToParts(list_head, k);
 
-    for(const auto& vec : result)   // vec保存的应当是每一个链表的头结点
-    {
-        ListNode* init_head = vec;
-        while (init_head != nullptr)
-        {
-            cout << init_head->val << " ";
-            
-            init_head = init_head->next;
-        }
-        cout << endl;
-    }
+    // vec保存的应当是每一个链表的头结点
+    for(const auto& vec : result)   outputList(vec);
     return 0;
 }

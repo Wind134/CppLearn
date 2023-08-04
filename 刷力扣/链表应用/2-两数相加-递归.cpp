@@ -10,7 +10,6 @@
 - 基于原链表的写法，需要考虑长度问题，直接新建链表吧，这样也可以不破坏原链表的结构
 */
 #include "../headfile/io_for_leetcode.h"
-#include "../headfile/ListNode.h"
 using namespace std;
 bool tag = false;   // 初始值或者说默认值是不进位的
 
