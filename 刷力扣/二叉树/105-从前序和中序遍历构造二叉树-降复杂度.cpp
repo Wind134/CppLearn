@@ -1,15 +1,13 @@
 /*
-* 给定两个整数数组preorder和inorder，其中preorder是二叉树的先序遍历，inorder是同一棵树的中序遍历，请构造二叉树并返回其根节点
-* 之前的方法中需要建立四个数组，空间占用有点大
+题目：
+- 给定两个整数数组preorder和inorder，其中preorder是二叉树的先序遍历，inorder是同一棵树的中序遍历，请构造二叉树并返回其根节点。
 
+思路：
 - 优化的方向是将索引单独提出来，然后对inorder自身建立一个映射
-
 */
-#include <iostream>
-#include <vector>
+#include "../headfile/io_for_leetcode.h"
 #include <algorithm>
 #include <map>
-#include "../headfile/TreeNode.h"
 using namespace std;
 
 // 这部分用来建立映射，将中序数组中的值与下标索引相互对应
@@ -38,7 +36,7 @@ int begin_index_in, int end_index_in)    // 与之对应的，中序遍历中的
 TreeNode* buildTree(const vector<int>& preorder, const vector<int>& inorder) {
     if (preorder.size() == 0)   return nullptr; // 用哪个去表示size应该都行，反正大小必定一致
 
-    if (elem_index.empty()) {
+    if (elem_index.empty()) {   // 可以为后面查找索引实现O(1)的复杂度
         for (int i = 0; i < inorder.size(); i++)
             elem_index[inorder[i]] = i;
     }

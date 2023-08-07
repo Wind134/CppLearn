@@ -1,8 +1,14 @@
-#include <iostream>
-#include <vector>
+/**
+题目：
+- 从底向上的层序遍历；
+
+思路：
+- 逆向，然后翻转；
+*/
+#include "../headfile/io_for_leetcode.h"
 #include <algorithm>
 #include <queue>
-#include "../headfile/TreeNode.h"
+
 using namespace std;
 
 
@@ -40,24 +46,14 @@ vector<vector<int>> levelOrderBottom(TreeNode* root) {
 
 int main()
 {
-    cout << "Please input the value of every node(-1 represents null): ";
-    vector<int> root_array;
-    int input_data;
-    while (cin >> input_data)
-    {
-        root_array.push_back(input_data);
-        if(cin.get() == '\n')   break;
-    }
+    input input107;
+    auto input_vec = input107.input_vector();
     
-    TreeNode* root = buildTreeWithVec(root_array);  // 默认参数是0，这里省略了没写
+    TreeNode* root = buildTreeWithVec(input_vec);  // 默认参数是0
 
     auto result = levelOrderBottom(root);
 
-    for(const auto& vec : result)
-    {
-        for(auto& elem : vec)   cout << elem << " ";
-        cout << endl;
-    }
-
+    output output107;
+    output107.output_matrix(result);
     return 0;
 }

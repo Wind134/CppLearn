@@ -1,11 +1,13 @@
 /*
-给定两个整数数组inorder和postorder，其中inorder是二叉树的中序遍历，postorder是同一棵树的后序遍历，请你构造并返回这颗二叉树。
+题目：
+- 给定两个整数数组inorder和postorder，其中inorder是二叉树的中序遍历，postorder是同一棵树的后序遍历，请你构造并返回这颗二叉树。
+
+思路：
+- 递归
 */
-#include <iostream>
-#include <vector>
+#include "../headfile/io_for_leetcode.h"
 #include <algorithm>
 #include <map>
-#include "../headfile/TreeNode.h"
 using namespace std;
 
 // 这部分用来建立映射，将中序数组中的值与下标索引相互对应
@@ -23,8 +25,9 @@ int begin_index_in, int end_index_in)    // 中序遍历中的起始位与结束
 
     int index = elem_index[postorder[end_index_post]];   // 获取后序遍历中根节点的索引，以获取左右子树的索引
 
-    // 从这里可以知道，索引begin_index_post~left_end是左子树；
-    // begin_index_in ~ index - 1是右子树
+    // 从这里可以知道，索引begin_index_post~left_end与begin_index_in ~ index - 1对应左子树的数组；
+    // ....代表对应右子树的数组
+    // 总之就是找对应数组
     int left_end = begin_index_post - 1 + index - begin_index_in;
     root->left = splitByIndex(postorder, begin_index_post, left_end, begin_index_in, index - 1);
     root->right = splitByIndex(postorder, left_end + 1, end_index_post - 1, index + 1, end_index_in);
@@ -49,19 +52,11 @@ TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
 
 int main()
 {
-    vector<int> input_array1;
-    vector<int> input_array2;
+    input input106_1;
+    input input106_2;
 
-    int input_data;
-    while(cin >> input_data) {
-        input_array1.push_back(input_data);
-        if (cin.get() == '\n')  break;
-    }
-
-    while(cin >> input_data) {
-        input_array2.push_back(input_data);
-        if (cin.get() == '\n')  break;
-    }
+    vector<int> input_array1 = input106_1.input_vector();
+    vector<int> input_array2 = input106_2.input_vector();
     
     auto result = buildTree(input_array1, input_array2);
 

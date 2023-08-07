@@ -1,8 +1,11 @@
-/* 给定两个整数数组preorder和inorder，其中preorder是二叉树的先序遍历，inorder是同一棵树的中序遍历，请构造二叉树并返回其根节点。*/
-#include <iostream>
-#include <vector>
+/*
+题目：
+- 给定两个整数数组preorder和inorder，其中preorder是二叉树的先序遍历，inorder是同一棵树的中序遍历，请构造二叉树并返回其根节点。
+
+思路：递归处理；
+*/
+#include "../headfile/io_for_leetcode.h"
 #include <algorithm>
-#include "../headfile/TreeNode.h"
 using namespace std;
 
 
@@ -26,25 +29,15 @@ TreeNode* buildTree(const vector<int>& preorder, const vector<int>& inorder)
 
 int main()
 {
-    vector<int> input_array1;
-    vector<int> input_array2;
+    input input105_1;
+    input input105_2;
 
-    int input_data;
-    while(cin >> input_data)
-    {
-        input_array1.push_back(input_data);
-        if (cin.get() == '\n')  break;
-    }
-
-    while(cin >> input_data)
-    {
-        input_array2.push_back(input_data);
-        if (cin.get() == '\n')  break;
-    }
+    vector<int> input_array1 = input105_1.input_vector();
+    vector<int> input_array2 = input105_2.input_vector();
     
     auto result = buildTree(input_array1, input_array2);
 
-    preOrderTraversal(result);
+    postOrderTraversal(result);
 
     cout << endl;
 
