@@ -8,7 +8,7 @@
 #include <sys/stat.h>
 
 int main() {
-    const char* path = "/home/ping/资料笔记/CppLearn/POSIX接/";
+    const char* path = "/home/ping/资料笔记/CppLearn/POSIX接口/";
     struct stat fileStat;
 
     if (stat(path, &fileStat) == 0) {
@@ -16,7 +16,7 @@ int main() {
         printf("Last modified time: %s", ctime(&fileStat.st_mtime));
         printf("File permissions: %o\n", fileStat.st_mode & 0777);
     } else {
-        perror("stat");
+        perror("stat");     // 输出错误信息
     }
 
     return 0;
