@@ -19,15 +19,15 @@ public:
         : val(_val), left(_left), right(_right), next(_next) {}
 };
 
-Node* buildTreeWithVec(const std::vector<int>& nums, int index = 0) // 给一个默认参数不影响什么吧，这是默认的起始位置
+Node* buildTreeWithVec_diff(const std::vector<int>& nums, int index = 0) // 给一个默认参数不影响什么吧，这是默认的起始位置
 {
     if(index > nums.size() - 1)    return nullptr; // -1代表该节点不存在(注意权值为-1的情况即可)
 
     Node* root = new Node(nums[index]);
 
-    root->left = buildTreeWithVec(nums, 2 * index + 1);
+    root->left = buildTreeWithVec_diff(nums, 2 * index + 1);
 
-    root->right = buildTreeWithVec(nums, 2 * index + 2);
+    root->right = buildTreeWithVec_diff(nums, 2 * index + 2);
 
     root->next = nullptr;
 
@@ -57,7 +57,7 @@ Node* connect(Node* root) {
     return root;
 }
 
-// 这个函数实现了对该类结点的访问
+// 这个函数实现了对该类结点的访问，并非题目要考的范围，只是为了自行测试
 void visitNode(Node* root)
 {
     queue<Node*> node_queue;
@@ -85,7 +85,7 @@ int main()
 
     auto vec = input116.input_vector();
 
-    auto root = buildTreeWithVec(vec);
+    auto root = buildTreeWithVec_diff(vec);
 
     auto result = connect(root);
 

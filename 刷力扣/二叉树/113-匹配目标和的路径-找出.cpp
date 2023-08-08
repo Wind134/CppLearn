@@ -1,7 +1,12 @@
 /*
-给你二叉树的根节点root和一个整数目标和targetSum，找出所有从根节点到叶子节点路径总和等于给定目标和的路径。
+题目：
+- 给你二叉树的根节点root和一个整数目标和targetSum，找出所有从根节点到叶子节点路径总和等于给定目标和的路径。
+
+细节：
+- 权值并没有说明一定为负；
+思路：
+- 回溯；
 */
-#include "../headfile/TreeNode.h"
 #include "../headfile/io_for_leetcode.h"
 using namespace std;
 
