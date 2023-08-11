@@ -36,7 +36,7 @@
 
 ### CPP语言
 
-C++汇总的笔记基于《C++ Primer(第五版)》学习，历时将近一年时间的汇总，[学习笔记链接]([CppLearn/C++学习笔记.md at main · Wind134/CppLearn (github.com)](https://github.com/Wind134/CppLearn/blob/main/C%2B%2B学习笔记.md))；
+C++汇总的笔记基于《C++ Primer(第五版)》学习，历时将近一年时间的汇总，[学习笔记链接](https://github.com/Wind134/CppLearn/blob/main/C%2B%2B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md)；
 
 针对C++11新标准进行了针对性学习，后续逐步补充对C++14、17、20等新标准的学习，虽然今年23也基本要出来了；
 
