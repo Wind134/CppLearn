@@ -3,12 +3,7 @@
 
 * 初始只针对输入输出是vector以及string的情形进行了封装，后续会不断增添
 */
-#include <iostream>
-#include <vector>
-#include <string>
-#include <limits>
-#include <climits>
-#include <sstream>
+#include <bits/stdc++.h>
 #include "ListNode.h"
 #include "TreeNode.h"
 
@@ -91,9 +86,39 @@ public:
         return input_mat;
     }
 
+    // 输入一个二维的字符数组
+    std::vector<std::vector<char>>& input_char_matrix()
+    {
+        std::cout << "Please input the matrix(Enter to next row, and 'q' to end): \n";
+
+        std::string row_input;
+
+        while (std::getline(std::cin, row_input))
+        {
+            if (row_input == "q" || row_input == "Q")   break;
+            std::vector<char> row_vec;
+            std::istringstream iss(row_input);
+            char elem;
+            while (iss >> elem) row_vec.push_back(elem);
+            input_char_mat.emplace_back(row_vec);
+        }
+
+        if (std::cin.fail())
+        {
+            // 输入错误处理逻辑
+            std::cout << "Format wrong, invalid input, please input again!" << std::endl;
+
+            // 清空输入流
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+        return input_char_mat;
+    }
+
 private:
     std::vector<int> input_vec;
     std::vector<std::vector<int>> input_mat;
+    std::vector<std::vector<char>> input_char_mat;
     std::string input_str;
     std::vector<std::string> str_vec;
     int input_data;
