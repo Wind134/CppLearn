@@ -26,7 +26,8 @@
         --- 该高度的右边界已确认，即下一根柱子的索引，左边界呢？
         --- 弹出栈顶元素，将高度与h进行比较，如果相等，继续弹出，如果更小，左边界确认，持续这样下去，左边界一定能被确认
         --- 则得所求
-    -- 答案好像是另一种处理方案，弹出一个比较一个，即便是栈中有相同高度柱子的索引，由于弹一次比一次，也不影响结果；    
+    -- 答案好像是另一种处理方案，弹出一个比较一个，即便是栈中有相同高度柱子的索引，由于弹一次比一次，也不影响结果；
+- 在做完85题过后，优化一下84的单调栈写法，写太乱了；    
 */
 #include "../headfile/io_for_leetcode.h"
 #include <algorithm>
@@ -43,36 +44,16 @@ int largestRectangleArea(vector<int>& heights)
     // 因此建模来说，该索引永远无法出栈，干脆就添加进去，以当哨兵之用，这样不需要判断栈空
     index_stack.push(-1);
 
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i <= size; i++)
     {
-        // 如果下一个元素更小，那么显然可以确定，同时，处理完的元素就当不存在
-        if (heights[i + 1] < heights[i])    
-        {
-            result = max(result, (i - index_stack.top()) * heights[i]);
-
-            // 确定了该元素就完事了吗？并不是，别忘了之前有过元素入栈，如果栈顶的元素也比
-            // i + 1位置的要大呢，那么栈顶下标对应的高的宽度也能确定
-            while (index_stack.top() == -1 || heights[index_stack.top()] > heights[i + 1])
-            {
-                if (index_stack.top() == -1)    break;
-
-                else
-                {
-                    // 保存栈顶元素，之后将其出栈
-                    int temp = index_stack.top();
-
-                    // 出栈
-                    index_stack.pop();
-
-                    // 宽度刚好为i - index_stack.top()
-                    result = max(result, (i - index_stack.top()) * heights[temp]);
-                }
-            }
+        // 如果下一个元素小于栈顶元素，就要进行面积更新，直到不小于为止，更新完之后将索引入栈
+        // 从这里也很明显可以看到，每个元素索引都需要入栈....
+        while (index_stack.top() != -1 && heights[index_stack.top()] > heights[i]) {
+            int index = index_stack.top();
+            index_stack.pop();
+            result = max(result, (i - 1 - index_stack.top()) * heights[index]);
         }
-        else    // 如果下一个元素更大或者一样大，则将索引入栈
-        {
-            index_stack.push(i);
-        }
+        index_stack.push(i);
     }
 
     return result;
