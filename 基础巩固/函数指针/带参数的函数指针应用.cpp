@@ -20,6 +20,6 @@ int (*f1(int n))(int *, int) {
 int main() {
     int a[] = {1, 2, 3, 4, 5};
     int (*pmax)(int *, int) = f1(5);
-    cout << (*pmax)(a, 5) << endl;
+    cout << pmax(a, 5) << endl;
     return 0;
 }

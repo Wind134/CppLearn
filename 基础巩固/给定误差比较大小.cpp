@@ -1,4 +1,6 @@
-/* 限定误差范围是10^-8 */
+/*
+限定误差范围是10^-8
+*/
 #include <iostream>
 #include <cmath>
 using namespace std;

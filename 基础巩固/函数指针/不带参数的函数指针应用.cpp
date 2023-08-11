@@ -14,7 +14,7 @@ int main()
 {
    int arr[] = {3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 10};
    int len = sizeof(arr) / sizeof(*arr);
-   int max_val = (*pmax)(arr, len);
+   int max_val = pmax(arr, len);
    cout << max_val << endl;
    return 0;
 }
