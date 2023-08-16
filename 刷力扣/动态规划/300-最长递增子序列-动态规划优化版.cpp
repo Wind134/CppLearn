@@ -7,11 +7,9 @@
 * 这个思路的核心之处在于，我们要找到一个严格上升序列的子数组，但我们需要尽可能让序列上升得更慢
 * dp[1]的初始值为nums[0]，这个值(不一定是我们那个序列的最小值)，后续可能会不断的更新
 
-* 用vector调内置库函数，舒服
+* 用vector调内置库函数，舒服，降复杂度；
 */
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include "../headfile/io_for_leetcode.h"
 using namespace std;
 
 int lengthOfLIS(const vector<int>& nums) 
@@ -26,26 +24,18 @@ int lengthOfLIS(const vector<int>& nums)
                 // 要大，而且必须是dp数组中第一个比该数要大的数(vector是不是有一个默认函数可以实现这个目的，不行就只能自己二分了)
         {
             auto it = lower_bound(dp.begin(), dp.end(), nums[i]);
-            *it = nums[i];
+            *it = nums[i];  // 注意细节，这里是替换值
         }
     }
 
-    return dp.size();
+    return dp.size();   // 只是需要返回长度，而无须返回返回具体数组，如果是要返回具体数组，答案有多个；
 
 }
 
 int main()
 {
-    vector<int> input;
-    int input_data;
-    while (cin >> input_data)
-    {
-        input.push_back(input_data);
-        if (cin.get() == '\n')
-        {
-            break;
-        }
-    }
+    input input300;
+    auto vec = input300.input_vector();
     
-    cout << lengthOfLIS(input) << endl;
+    cout << lengthOfLIS(vec) << endl;
 }

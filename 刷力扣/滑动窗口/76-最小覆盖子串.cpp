@@ -18,14 +18,11 @@
 - 思路大致如此，接下来上代码
 */
 #include "../headfile/io_for_leetcode.h"
-#include <map>
-#include <climits>
-#include <algorithm>
 using namespace std;
 
 bool check(const map<char, int>& m1, map<char, int>& m2) {    // m1是通过子串生成的map
     for (const auto& elem : m1) {
-        if (m2[elem.first] < elem.second)   return false;   // 这一行代码隐藏一个细节问题，如果elem.first的key不存在，会增加，因此不能const
+        if (m2[elem.first] < elem.second)   return false;   // 这一行代码隐藏一个细节问题，如果elem.first的key不存在，会增加，因此m2不能const
     }
 
     return true;
@@ -42,9 +39,6 @@ string minWindow(string s, string t) {
     
     while (right < (int)s.size()) {
         if (t_times.find(s[++right]) != t_times.end())   ++window_times[s[right]];  // right已经自增了
-        else {
-            if (window_times.empty())   left = right + 1;
-        }
         
 
         while (check(t_times, window_times) && left <= right)   // 如果满足，我们就尝试不断拓展左边界
@@ -62,7 +56,7 @@ string minWindow(string s, string t) {
         }
     }
 
-    return real_left == -1 ? "" : s.substr(real_left, length);
+    return length == INT_MAX ? "" : s.substr(real_left, length);
 
 }
 

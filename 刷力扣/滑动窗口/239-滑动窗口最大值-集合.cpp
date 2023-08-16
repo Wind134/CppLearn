@@ -14,11 +14,9 @@
 - 使用集合是个好办法，只是时间/空间复杂度多少有点高了(考虑尝试优化的思路)
 */
 #include "../headfile/io_for_leetcode.h"
-#include <set>
-#include <algorithm>
 using namespace std;
 
-vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+vector<int> maxSlidingWindow(const vector<int>& nums, int k) {
     int size = nums.size();
     multiset<int> window;
     vector<int> res;
@@ -28,13 +26,12 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k) {
     for (int i = 0; i <= size - k; i++) {
         if (window.empty()) for_each(nums.begin(), nums.begin() + k, [&window](int x) { window.insert(x); });
         else {
-            window.erase(window.find(out_elem));
-            window.insert(nums[i + k - 1]);
-            out_elem = nums[i];
+            window.erase(window.find(out_elem));    // 移除第一个元素
+            window.insert(nums[i + k - 1]);         // 插入新元素
+            out_elem = nums[i];                     // 更新第一个元素
         }
 
-
-        res.push_back(*(--window.end()));
+        res.push_back(*(window.rbegin()));
     }
 
     return res;
@@ -42,6 +39,7 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k) {
 
 int main() {
     input input239;
+    output output239;
     auto input_vec = input239.input_vector();
     int k;
     cout << "Please input the length of window: ";
@@ -49,7 +47,7 @@ int main() {
 
     auto output_res = maxSlidingWindow(input_vec, k);
 
-    for (auto& elem : output_res)   cout << elem << " ";
+    output239.output_array(output_res);
 
     return 0;
 }

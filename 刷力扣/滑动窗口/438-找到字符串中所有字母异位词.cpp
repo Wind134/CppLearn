@@ -1,43 +1,15 @@
 /*
-* 给定两个字符串s和p，找到s中所有p的异位词的子串，返回这些子串的起始索引。
+题目：
+- 给定两个字符串s和p，找到s中所有p的异位词的子串，返回这些子串的起始索引。
+- 不考虑答案输出的顺序。
 
-* 不考虑答案输出的顺序。
+注：异位词指由相同字母重排列形成的字符串(包括相同的字符串)。 
 
-* 异位词指由相同字母重排列形成的字符串(包括相同的字符串)。 
-
-* 我们可以考虑同时算长串以及短串的映射值
+思路：
+- 我们可以考虑同时算长串以及短串的映射值
 */
-#include <iostream>
-#include <vector>
-#include <map>
-#include <string>
-
+#include "../headfile/io_for_leetcode.h"
 using namespace std;
-
-// map<char, int> get_strMap(const string& str)
-// {
-//     map<char, int> char_map;
-//     for(char c : str) char_map[c]++;
-//     return char_map;
-// }
-
-// // 下面这个函数时间复杂度为常数级
-// bool isEqual(const map<char, int>& m1, const map<char, int>& m2)
-// {
-//     if (m1.size() != m2.size()) return false;
-//     else
-//     {
-//         for(auto map_it1 = m1.begin(), map_it2 = m2.begin(); map_it1 != m1.end(); map_it1++, map_it2++)
-//         {
-//             if(map_it1->first != map_it2->first)    return false;
-//             else
-//             {
-//                 if(map_it1->second != map_it2->second)  return false;
-//             }
-//         }
-//     }
-//     return true;
-// }
 
 bool operator==(const vector<int> v1, const vector<int> v2)
 {
@@ -64,16 +36,15 @@ vector<int> findAnagrams(string s, string p)
 
     int p_size = p.size();
 
-    for(int i = 0; i < p.size(); i++)
+    for(int i = 0; i < p.size(); ++i)
     {
         map_array_p[p[i] - 'a']++;
         map_array_s[s[i] - 'a']++;
     }
 
-
     if(map_array_p == map_array_s)   result.push_back(0);
 
-    for(int i = 0; i < s.size() - p_size; i++)
+    for(int i = 0; i < s.size() - p_size; ++i)
     {
         // 这俩行的理解：i代表的是移动的次数(短串移动的次数)，一共能移动(s.size() - p_size - 1次)
         // s[i] - 'a'代表随着p的移动，s与p相对照的字串也发生变化，但不管怎么变化，随着一次一次的移动
@@ -87,8 +58,8 @@ vector<int> findAnagrams(string s, string p)
         //     a c a c
         // a b a c a c d a b s a 
         // 可以看到，消失掉的字符是a，新出现的是a
-        map_array_s[s[i] - 'a']--;
-        map_array_s[s[i + p_size] - 'a']++;
+        --map_array_s[s[i] - 'a'];
+        ++map_array_s[s[i + p_size] - 'a'];
 
         if(map_array_s == map_array_p)   result.push_back(i + 1);
     }
@@ -104,5 +75,5 @@ int main()
 
     auto result = findAnagrams(long_str, str);
 
-    for(auto elem : result) cout << elem << " \n"[elem == *(result.end() - 1)];
+    for(auto elem : result) cout << elem << " \n"[elem == *(result.rbegin())];
 }
