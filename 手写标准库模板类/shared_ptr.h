@@ -18,9 +18,9 @@ public:
     // 析构函数
     ~SharedPtr() {
         if (--(*count_ptr) == 0) {  // 当引用计数为0的时候
-            delete obj_ptr;     // 删除那片空间
-            delete count_ptrl;  // 不再需要存储引用计数
-            obj_ptr = nullptr;  // 指针本身置空，以解决悬空指针的问题
+            delete obj_ptr;         // 删除那片空间
+            delete count_ptr;       // 不再需要存储引用计数
+            obj_ptr = nullptr;      // 指针本身置空，以解决悬空指针的问题
             count_ptr = nullptr;  
         }
     }
