@@ -3,38 +3,34 @@
 各排序数组的返回类型也是数组，也是为了方便输出测试；
 */
 
-#include "../刷力扣/headfile/io_for_leetcode.h"
+#include "../../刷力扣/headfile/io_for_leetcode.h"
 using namespace std;
 
 class sort_method {
 public:
     void pivot_process(vector<int>& array, int begin, int end) {    // 给定一个范围，确定该范围的中枢数
         if (begin >= end)   return;
-        int pivot = array[begin];    // 选取序列中开头元素作为基准
-        int left_ptr = begin + 1;
-        int right_ptr = end; 
-        while (left_ptr < right_ptr) {  // 只要左右两个指针没有相遇
-            // 从下面这个循环可以看出来的是：left_ptr指向的位置要么是第一个大于pivot的位置
-            // 要么是到了right_ptr这个位置，可以确定的是，即便是到了这个位置，在该位置以前的数都一定是小于等于pivot的
-            while (left_ptr <= right_ptr && array[left_ptr] <= pivot) {   // 找到第一个大于基准的位置
-                left_ptr++;
-            }
-            // 从下面这个循环可以看出来的是：right_ptr指向的位置要么是第一个小于pivot的位置
-            // 要么是到了left_ptr这个位置，可以确定的是，即便是到了这个位置，在该位置以后的数都一定是大于pivot的
-            while (left_ptr <= right_ptr && array[right_ptr] >= pivot) {  // 找到第一个小于基准的位置
-                right_ptr--;
-            }
+        int pivot = array[begin];   // 选取序列中最后一个元素作为基准
+        int after_pivot_index = end + 1;    // 这个索引始终指向第一个大于等于枢轴的位置
 
-            // 经过这两个循环处理之后，要么左指针指向大于base的那个位置，右指针指向了小于base的那个位置
-            // 要么循环条件退出了，如果循环条件没有退出，则交换
-            if (left_ptr < right_ptr)   swap(array[left_ptr], array[right_ptr]);    // 交换两个地方的位置
+        // 2023-08-21更改的一种全新的快排策略：将每个大于等于枢轴的元素移动到后面去
+        for(int i = end; i > begin; --i) {
+            // 如果不比枢轴位置处的元素小，则更新指向位置的索引，这个等于号很关键，它保证了索引始终指向第一个大于等于枢轴的位置
+            // 交换的意义在于：将索引指向位置的前一个位置的元素换成比pivot更大的；
+            // 观察下面这个式子，更大的array[i]换到了后面
+            if (array[i] >= pivot) {
+                --after_pivot_index;
+                swap(array[i], array[after_pivot_index]);
+            }   
         }
 
-        // 上面循环退出的原因一定是两个索引指针相等
-
-        if (array[right_ptr] < array[begin])   swap(array[begin], array[right_ptr]);    // pivot的位置已放置
-        pivot_process(array, begin, right_ptr - 1);
-        pivot_process(array, right_ptr + 1, end);
+        // 经过上面的循环处理完之后，after_pivot_index始终保持指向最后一个大于等于枢轴位置的元素
+        // 最后把枢轴处的元素换过来
+        // 也就是说枢轴的索引是after_pivot_index - 1
+        swap(array[--after_pivot_index], array[begin]);
+        
+        pivot_process(array, begin, after_pivot_index - 1);
+        pivot_process(array, after_pivot_index + 1, end);
     }
 
     // 快速排序
