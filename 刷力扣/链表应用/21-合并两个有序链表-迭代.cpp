@@ -8,60 +8,30 @@ using namespace std;
 
 ListNode* mergeTwoLists(ListNode* list1, ListNode* list2)   // 都不带指向头节点的指针
 {
-    if(list1 == nullptr)    return list2;
-    if(list2 == nullptr)    return list1;
-    ListNode* list = new ListNode();    // 新链表的头节点
-    ListNode* list1Node = list1;
-    ListNode* list2Node = list2;
-    if (list1Node->val < list2Node->val)
-    {
-        list = list1Node;
-        list1Node = list1Node->next;
-    }
-    else
-    {
-        list = list2Node;
-        list2Node = list2Node->next;
-    }
+    if (!list1 && !list2)   return nullptr;
+    if (!list1 && list2) return list2;
+    if (list1 && !list2) return list1;
 
-    ListNode* listNode = new ListNode();
-    listNode->next = list;
+    // 以下保证两张链表都一定在，可以用递归，也可以用迭代做
+    ListNode* prev = new ListNode();
+    ListNode* move_res = prev;
+    ListNode* move1 = list1;
+    ListNode* move2 = list2;
+    while (move1 && move2) {
+        if (move1->val <= move2->val) {
+            move_res->next = move1;
+            move1 = move1->next;
+        }
+        else {
+            move_res->next = move2;
+            move2 = move2->next;
+        }
+        move_res = move_res->next;
+    }
+    if (move1)  move_res->next = move1;
+    if (move2)  move_res->next = move2;
 
-    while (list1Node != nullptr && list2Node != nullptr)
-    {
-        if (list1Node->val < list2Node->val)
-        {
-            listNode->next->next = list1Node;
-            listNode->next = list1Node;
-            list1Node = list1Node->next;
-        }
-        else
-        {
-            listNode->next->next = list2Node;
-            listNode->next = list2Node;
-            list2Node = list2Node->next;
-        }
-    }
-    if(list1Node == nullptr)
-    {
-        while(list2Node != nullptr)
-        {
-            listNode->next->next = list2Node;
-            listNode->next = list2Node;
-            list2Node = list2Node->next;
-        }   
-    }
-
-    if(list2Node == nullptr)
-    {
-        while(list1Node != nullptr)
-        {
-            listNode->next->next = list1Node;
-            listNode->next = list1Node;
-            list1Node = list1Node->next;
-        }
-    }
-    return list;
+    return prev->next;
 }
 
 int main()
