@@ -65,7 +65,6 @@ vector<int> findSubstring(string s, vector<string>& words)
         }
 
         // begin的变化代表着窗口的滑动，如果滑出的单词等于滑入的单词，且前一个已匹配，那么就不需要再操作哈希表了，直接通过单个词汇判断
-        // begin的变化代表着窗口的滑动，如果滑出的单词等于滑入的单词，且前一个已匹配，那么就不需要再操作哈希表了，直接通过单个词汇判断
         if (word_len == 1 && temp.size() == 1 && temp.begin()->second == 0) {
             while (begin + 1 <= s_length - words_size * word_len && string(s.begin() + begin, s.begin() + begin + 1) == 
             string(s.begin() + begin + words_size, s.begin() + begin + words_size + 1)) {
