@@ -7,7 +7,6 @@
 #include <iostream>
 #include <memory>
 #include <mutex>
-#include <atomic>
 #include <thread>
 
 std::mutex mtx;
