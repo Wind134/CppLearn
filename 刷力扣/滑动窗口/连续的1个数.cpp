@@ -1,7 +1,7 @@
 #include "../headfile/io_for_leetcode.h"
 using namespace std;
 
-int longestOnes(vector<int>& nums, int k) {
+int longestOnes(const vector<int>& nums, int k) {
     int left = 0, right = 0;
     int zeroCount = 0;  // 该变量用来记录零的数目
     int maxOnes = 0;    // 最大结果
@@ -24,6 +24,7 @@ int longestOnes(vector<int>& nums, int k) {
 
     return maxOnes;
 }
+
 
 int main() {
     input input_this;
