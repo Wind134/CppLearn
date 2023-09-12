@@ -43,7 +43,7 @@ String::String(const String& other) {
 }
 
 String& String::operator=(const String& other) {
-    if (this == &other) {           // 若是自赋值，下面这段不会执行
+    if (this != &other) {           // 若是自赋值，下面这段不会执行
         if (data)   delete [] data; // 释放原有的空间
         length = other.length;
         data = new char[length + 1];
@@ -61,7 +61,7 @@ String::String(String&& other) noexcept : data(nullptr), length(0) {
 String& String::operator=(String&& other) noexcept {
     if (this != &other) {
         delete [] data;
-        std::swap(data, other.data);    // 应该没有空旋指针的风险，右值嘛，离开作用域就被回收了
+        std::swap(data, other.data);    // 应该没有悬空指针的风险，右值嘛，离开作用域就被回收了
         std::swap(length, other.length);
     }
 
