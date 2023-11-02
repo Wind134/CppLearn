@@ -13,7 +13,7 @@ class SharedPtr {
 public:
     // 构造函数，先是参数为空的构造函数
     explicit SharedPtr(): obj_ptr(nullptr), count_ptr(new size_t(0)) {}
-    explicit SharedPtr(T* ptr): obj_ptr(ptr), count_ptr(new size_t(1)) {}; 
+    explicit SharedPtr(T* ptr): obj_ptr(ptr), count_ptr(new size_t(1)) {}
 
     // 析构函数
     ~SharedPtr() {
